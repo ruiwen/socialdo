@@ -6,6 +6,8 @@ from ragendja.settings_pre import *
 # automatically becomes /media/MEDIA_VERSION/
 MEDIA_VERSION = 1
 
+TIME_ZONE = 'Asia/Singapore'
+
 # By hosting media on a different domain we can get a speedup (more parallel
 # browser connections).
 #if on_production_server or not have_appserver:
@@ -48,7 +50,6 @@ LANGUAGE_CODE = 'en'
 
 # Restrict supported languages (and JS media generation)
 LANGUAGES = (
-    ('de', 'German'),
     ('en', 'English'),
 )
 
