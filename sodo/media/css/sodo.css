@@ -1,0 +1,131 @@
+
+/** Social Do CSS **/
+
+body {
+	font-family: 'Lucida Grande', 'Helvetica', 'Verdana', 'sans-serif';
+	font-size: 12px;
+	color: #636363;
+}
+
+a, a:visited {
+	color: #636363;
+}
+
+a:hover {
+	color: #888;
+}
+
+/** Reset **/
+div, p, ul, li {
+	border: 0px;
+	margin: 0px;
+}
+
+/** Generic classes **/
+.container {
+	width: 100%;
+}
+
+.clear {
+	clear: both;
+}
+
+
+input[type=checkbox] {
+	border: 1px solid #ff0000;
+}
+
+/** Main Index **/
+
+#lists {
+	background-color: #ddd;
+	padding: 5px 0px 5px 0px;
+	width: 100%;	
+}
+
+.list {
+	font-size: 20px;
+	font-weight: bold;
+	margin: 7px 0px 7px 0px;
+}
+
+.list ul {
+	list-style-type: none;
+}
+
+.list ul li {
+	display: inline;
+}
+
+.list-item-count {
+	background-color: #ff0000;
+	padding: 3px
+}
+
+.list-user-name {
+	font-size: 10px;
+	float: right;
+}
+
+
+/** List view **/
+
+#thelist {
+	font-size: 20px;
+}
+
+.list-item ul {
+	list-style-type: none;
+}
+
+.list-item ul li {
+	display: inline;
+}
+
+/*
+.list-item .list-item-date-added,
+.list-item .list-item-date-completed {
+	display: none;
+}
+
+
+.list-item .list-item-date-added:hover,
+.list-item .list-item-date-completed:hover {
+	display: block;
+}*/
+
+
+/** User Profile **/
+
+#user-profile {
+	font-size: 20px;
+}
+
+#user-profile ul {
+	list-style-type: none;
+}
+
+#user-profile label {
+	display: block;
+	float: left;
+	margin-right: 10px;
+	text-align: right;
+	width: 150px;
+}
+
+#user-profile input[type=text] {
+	border: 0px;
+	border-bottom: 1px dotted #5e5e5e;
+	font-family: "Georgia", "serif";
+	font-size: 20px;
+	padding-left: 7px;
+}
+
+.user-info {
+	float: left;
+	margin-right: 35px;
+}
+
+#user-lists {
+	margin-top: 20px;
+}

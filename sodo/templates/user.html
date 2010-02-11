@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	{{ user.get_full_name }}{{ _("'s Profile") }}
+{% endblock %}
+
+
+{% block content %}
+	
+	<h1>{{ user.get_full_name }}{{ _("'s Profile") }}</h1>
+	
+	<div id="user-profile">
+				
+		<div class='user-info'>
+			<ul>
+				<li><label for='user-username'>{{ _("Username") }}</label><input type='text' id='user-username' value='{{ user.username }}'></li>
+				<li><label for='user-firstnae'>{{ _("First name") }}</label><input type='text' id='user-firstname' value='{{ user.first_name }}'></li>
+				<li><label for='user-lastname'>{{ _("Last name") }}</label><input type='text' id='user-lastname' value='{{ user.last_name }}'></li>
+				<li><label for='user-email'>{{ _("Email address") }}</label><input type='text' id='user-email' value='{{ user.email }}'></li>			
+			</ul>
+		</div>
+		
+		<div class='user-image'>
+			<img src="{{ MEDIA_URL }}global/img/generic-user.png" title="{{ user.get_full_name }}">
+		</div>
+	</div>
+	
+	<div class="clear"></div>
+	
+	<div id="user-lists">
+		<h2>{{ user.first_name }} {{ _("is part of the following lists") }}:</h2>
+	
+		<ul>
+			{% for list in user.lists %}
+				<div class='list'>
+					<ul>
+						<li class='list-name'><a href="/list/{{ list.key.id }}/">{{ list.name }}</a></li>
+						<li class='list-item-count'>{{ list.list_items.count }} {{ _("items") }}</li>
+					</ul>
+				</div>
+			{% endfor %}
+		</ul>
+	
+	</div>
+	
+{% endblock %}

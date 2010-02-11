@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block title %}
+	List {{ thelist.name }} by {{ thelist.user.get_full_name }}
+{% endblock %}
+
+{% block content %}
+
+	<h1>{{ thelist.name }} by <a href='/user/{{ thelist.user.username }}/'>{{ thelist.user.get_full_name }}</a></h1>
+
+	<div id='thelist'>
+		{% for item in thelist.list_items %}
+			<div class='list-item'>
+				<ul>
+					<li class='list-item-completed'><input type='checkbox' {% if item.completed %} checked {% else %} {% endif %}></li>
+					<li class='list-item-desc'>{{ item.desc|truncatewords:10 }}</li>
+					<li class='list-item-date-added'>{% if item.date_added %}{{ item.date_added|naturalday }}{% else %}--{% endif %}</li>
+					<li class='list-item-date-completed'>{% if item.date_completed %}{{ item.date_completed|naturalday }}{% else %}--{% endif %}</li>
+				</ul>
+			</div>
+		{% endfor %}	
+	</div>
+
+{% endblock %}

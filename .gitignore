@@ -1,0 +1,7 @@
+index.yaml
+*.pyc
+
+# Ignore generated media
+_generated_media/*
+.dynamic_media/*
+
