@@ -1,0 +1,37 @@
+Hello World
+
+{% if user.is_authenticated %}
+	<h1>User details</h1>
+	{% if user.is_authenticated %}
+		<p>Authenticated</p>
+	{% endif %}
+	<ul>
+		<li>{{ user.username }}</li>
+		<li>{{ user.first_name }}</li>
+		<li>{{ user.last_name }}</li>
+		<li>{{ user.email }}</li>
+	
+	</ul>
+	<div>
+		<p>Fields</p>
+		{{ user.fields }}
+	</div>
+	
+	<div>
+		<p>Session</p>
+		{{ session }}
+	</div>
+	
+	<div>
+		<p>Twitter</p>
+		{% if twitobj.auth %}
+			TRUE
+			<p>Screen name: {{ twitobj.name }}</p>
+			<p>{{ twitobj.details|capfirst }}</p>
+		{% else %}
+			FALSE
+		{% endif %}
+	</div>
+{% else %}
+	<h1>Unauthenticated</h1>
+{% endif %}

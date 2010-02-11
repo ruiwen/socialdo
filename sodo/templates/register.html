@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	{{ _("Sign up for") }} Svarm Do!
+{% endblock %}
+
+
+{% block content %}
+
+<h1>{{ _("Sign up for Svarm Do") }}</h1>
+
+<div id="userForm">
+	<form action="/register/" method="post">
+
+		{% if uform.non_field_errors %}
+			<div class='error'>{{ uform.non_field_errors }}</div>
+		{% endif %}
+
+		{% for field in uform.visible_fields %}
+			<div class="fieldWrapper">
+				{% if field.errors %}<div class='errorField'>{{ field.errors }}</div>{% endif %}
+				<div class="labelField">{{ field.label_tag }}</div>
+				<div class="valueField">{{ field }}</div>
+			</div>
+		{% endfor %}
+	    
+	    <input type="submit" value="{{ _('Svarm') }}! >>">
+	</form>
+</div>
+
+{% endblock %}
