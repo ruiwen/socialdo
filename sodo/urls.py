@@ -9,6 +9,8 @@ urlpatterns = patterns('',
 	url(r'user/(?P<username>\w+)/?$', show_user, name="sodo.show.user"),
 
 	url(r'register/$', user_register, name='sodo.user.register'),
+	url(r'login/$', user_login, name='sodo.user.login'),
+	url(r'logout/$', user_logout, name='sodo.user.logout'),
 	
 	url(r'debug/$', debug, name='sodo.debug'),
 

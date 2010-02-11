@@ -5,6 +5,17 @@ from django.utils.translation import ugettext_lazy as _, ugettext as __
 from ragendja.auth.models import UserTraits
 from django.forms.util import ErrorList
 
+class UserLoginForm(forms.ModelForm):
+
+	password = forms.CharField(widget=forms.PasswordInput(render_value=False),
+		label=_(u'Password'))	
+
+	class Meta:
+		model = User
+		fields = ('username',)
+
+
+
 class UserRegistrationForm(forms.ModelForm):
 	
 	password1 = forms.CharField(widget=forms.PasswordInput(render_value=False),
@@ -47,7 +58,7 @@ class UserRegistrationForm(forms.ModelForm):
 			if self.cleaned_data['password1'] != self.cleaned_data['password2']:
 				password_error = __(u'You must type the same password each time')
 				self._errors['password1'] = ErrorList([password_error])
-				#raise forms.ValidationError(__(u'You must type the same password each time'))
+
 		return self.cleaned_data
 
     

@@ -95,6 +95,33 @@ input[type=checkbox] {
 }*/
 
 
+/** User Login **/
+#user-login {
+	font-size: 20px;
+}
+
+
+#user-login input[type=text],
+#user-login input[type=password] {
+	border: 0px;
+	border-bottom: 1px dotted #5e5e5e;
+	font-family: "Georgia", "serif";
+	font-size: 20px;
+	padding-left: 7px;
+}
+
+#user-login ul {
+	list-style-type: none;
+}
+
+#user-login label {
+	display: block;
+	float: left;
+	margin-right: 10px;
+	text-align: right;
+	width: 180px;
+}
+
 /** User Profile **/
 
 #user-profile {

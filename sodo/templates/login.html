@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	{{ _("Sign in to") }} Svarm Do!
+{% endblock %}
+
+
+
+{% block content %}
+
+	{% if errors %}
+		<p>Errors</p>
+		<p class='error'>{{ errors }}</p>
+	{% endif %}
+
+	<div id='user-login'>
+		<form action="{{ request.path }}" method="post">
+			<ul>		
+				{{ uform.as_ul }}						
+			</ul>
+			<input type='hidden' name="next" value="{{ next }}">		
+			<input type="submit" value="{{ _("Sign in") }}">			
+		</form>
+	</div>
+
+{% endblock %}
