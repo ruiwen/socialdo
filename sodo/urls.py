@@ -5,8 +5,15 @@ from sodo.views import *
 urlpatterns = patterns('',
 
 	url(r'^$', index, name='sodo.index'),
-	url(r'list/(?P<index>\d+)/?$', show_list, name="sodo.show.list"),
-	url(r'user/(?P<username>\w+)/?$', show_user, name="sodo.show.user"),
+	
+	# List methods
+	url(r'list/(?P<index>\d+)/?$', list_show, name="sodo.show.list"),
+	url(r'list/new/?$', list_new, name="sodo.list.new"),
+	url(r'list/(?P<list_index>\d+)/new/item/?$', list_item_new, name="sodo.list.item.new"),
+	
+	# User methods
+	url(r'user/(?P<username>\w+)/?$', user_profile, name="sodo.user.show"),
+	url(r'user/(?P<username>\w+)/add/friend/?$', user_add_friend, name="sodo.user.add.friend"),
 
 	url(r'register/$', user_register, name='sodo.user.register'),
 	url(r'login/$', user_login, name='sodo.user.login'),
