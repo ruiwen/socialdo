@@ -9,7 +9,8 @@ from django.contrib.auth import authenticate, login, logout
 from sodo.models import *
 
 # Forms
-from sodo.forms import UserRegistrationForm, UserLoginForm
+from sodo.forms import *
+#from sodo.forms import ListCreateForm, UserRegistrationForm, UserLoginForm
 
 def debug(request):
 	# Misc
@@ -29,11 +30,45 @@ def index(request):
 	return render_to_response(request, 'index.html', {'lists':lists, 'user':request.user})
 
 
-def show_list(request, index):
+def list_new(request):
+
+	if request.method == 'GET':
+		lform = ListCreateForm()
+		return render_to_response(request, 'list/new.html', {'lform':lform})
+
+	elif request.method == 'POST':
+		lform = ListCreateForm(request.POST)
+		
+		if lform.is_valid():
+			cd = lform.cleaned_data
+			
+			nlist = List(name=cd['name'], parent_list=cd['parent_list'], user=request.user)			
+			nlist.put()
+		
+			return HttpResponseRedirect(reverse('sodo.show.list', args=(nlist.key().id(),)))					
+		
+		return render_to_response(request, 'list/new.html', {'lform':lform})			
+
+
+
+def list_item_new(request, list_index):
+	
+	if request.method == 'POST':
+		# Retrieve the list
+		l = List.get_by_id(int(list_index))
+		nitem = Item(user=request.user, parent_list=l, desc=request.POST['item-desc'])
+		nitem.put()
+		
+	return HttpResponseRedirect(reverse('sodo.show.list', args=(int(list_index),)))
+	
+	
+
+def list_show(request, index):
 	
 	# Retrieve list
 	the_list = List.get_by_id(int(index))
-	return render_to_response(request, 'list.html', {'thelist':the_list})
+	return render_to_response(request, 'list/show.html', {'thelist':the_list})
+	
 	
 
 def show_user(request, username):

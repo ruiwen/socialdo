@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+	{{ _("Create a new list") }} - {% if user.first_name %}{{ user.get_full_name}}{% else %}{{ user.username }}{% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+	<h1>{{ _("What do you want a list about?") }}</h1>
+
+	{% if lform.errors %}
+		<div id="list=error">
+			<p class="error">
+				{{ lform.errors }}
+			</p>
+		</div>
+	{% endif %}
+
+	<div id="list-new">
+		<form class="styled-form" method="post" action="{% url sodo.list.new %}">
+			<ul>
+				{{ lform.as_ul }}
+				<li><input type="submit" value="{{ _("Create the form") }}"></li>
+			</ul>			
+		</form>
+	</div>
+
+{% endblock %}

@@ -21,6 +21,12 @@ class List(db.Model):
 	date_added = db.DateTimeProperty(auto_now_add=True)
 	date_modified = db.DateTimeProperty(auto_now=True)
 	name = db.StringProperty()
+	
+	def __str__(self):
+		return self.name
+		
+	def __unicode__(self):
+		return self.name
 
 	
 class Item(db.Model):
@@ -30,8 +36,8 @@ class Item(db.Model):
 	parent_list = db.ReferenceProperty(List, collection_name="list_items")
 	date_added = db.DateTimeProperty(auto_now_add=True)
 	date_modified = db.DateTimeProperty(auto_now=True)
-	date_completed = db.DateTimeProperty()
-	completed_by = db.ReferenceProperty(User, collection_name='completed_items')
+	date_completed = db.DateTimeProperty(required=False)
+	completed_by = db.ReferenceProperty(User, collection_name='completed_items', required=False)
 	
 	
 	

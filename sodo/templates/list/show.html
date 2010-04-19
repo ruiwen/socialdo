@@ -10,17 +10,29 @@
 
 	<h1>{{ thelist.name }} by <a href='/user/{{ thelist.user.username }}/'>{{ thelist.user.get_full_name }}</a></h1>
 
-	<div id='thelist'>
+	<div id='thelist' class='styled-form'>
 		{% for item in thelist.list_items %}
-			<div class='list-item'>
-				<ul>
+			<div class='list-item {% if item.completed %}completed{% endif %}'>
+				<ul class='clearfix'>
 					<li class='list-item-completed'><input type='checkbox' {% if item.completed %} checked {% else %} {% endif %}></li>
 					<li class='list-item-desc'>{{ item.desc|truncatewords:10 }}</li>
-					<li class='list-item-date-added'>{% if item.date_added %}{{ item.date_added|naturalday }}{% else %}--{% endif %}</li>
-					<li class='list-item-date-completed'>{% if item.date_completed %}{{ item.date_completed|naturalday }}{% else %}--{% endif %}</li>
+					<li class='list-item-date-added'>{% if item.date_added %}{{ _("Added")}}: {{ item.date_added|naturalday }}{% else %}--{% endif %}</li>
+					<li class='list-item-date-completed clearfix'>{% if item.date_completed %}{{ _("Completed") }}: {{ item.date_completed|naturalday }}{% else %}--{% endif %}</li>
 				</ul>
 			</div>
-		{% endfor %}	
+		{% empty %}
+			<h3>{{ _("No items in this list") }}</h3>			
+		{% endfor %}
+		
+		{% ifequal request.user thelist.user %}
+			<div class='list-item'>
+				<ul>
+					<form method="post" action="{% url sodo.list.item.new thelist.key.id %}">
+						<li class='list-item-desc'><input class='new-list-item-desc' type="text" name='item-desc' value="{{ _("Add new item") }}"></li>
+					</form>
+				</ul>
+			</div>	
+		{% endifequal %}
 	</div>
 
 {% endblock %}

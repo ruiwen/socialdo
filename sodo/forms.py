@@ -5,6 +5,19 @@ from django.utils.translation import ugettext_lazy as _, ugettext as __
 from ragendja.auth.models import UserTraits
 from django.forms.util import ErrorList
 
+from sodo.models import List
+
+# List forms
+class ListCreateForm(forms.ModelForm):
+	
+	parent_list = forms.ModelChoiceField(required=False, queryset=List.all())
+	
+	class Meta:
+		model = List
+		fields = ('name',)
+		
+
+
 class UserLoginForm(forms.ModelForm):
 
 	password = forms.CharField(widget=forms.PasswordInput(render_value=False),

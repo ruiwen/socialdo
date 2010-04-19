@@ -88,30 +88,46 @@ input[type=checkbox] {
 	font-size: 20px;
 }
 
+.completed {
+	color: #dedede;
+}
+
+.completed .list-item-desc {
+	text-decoration: line-through;
+}
+
 .list-item ul {
 	list-style-type: none;
 }
 
 .list-item ul li {
-	display: inline;
+	/*display: inline;*/
+	float: left;
 }
 
-/*
+.list-item .list-item-desc {
+	width: 12em;
+}
+
 .list-item .list-item-date-added,
 .list-item .list-item-date-completed {
-	display: none;
+	font-size: x-small;
+	margin-right: 9px;
 }
 
 
 .list-item .list-item-date-added:hover,
 .list-item .list-item-date-completed:hover {
-	display: block;
-}*/
+	font-size: x-small;
+	margin-right: 9px;
+}
 
 
-/** User Login **/
-#user-login {
-	font-size: 20px;
+.list-item input.new-list-item-desc {
+	/*border: none;
+	border-bottom: 1px dotted #5e5e5e;*/
+	color: #5e5e5e;
+	padding-left: 25px;
 }
 
 
