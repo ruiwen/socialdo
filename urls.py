@@ -9,7 +9,7 @@ admin.autodiscover()
 
 handler500 = 'ragendja.views.server_error'
 
-urlpatterns = auth_patterns + patterns('',
+urlpatterns = patterns('',
     ('^admin/(.*)', admin.site.root),
     
     # Social do
@@ -21,4 +21,4 @@ urlpatterns = auth_patterns + patterns('',
     #url(r'^account/register/$', 'registration.views.register',
     #    kwargs={'form_class': UserRegistrationForm},
     #    name='registration_register'),
-) + urlpatterns
+) + urlpatterns + auth_patterns

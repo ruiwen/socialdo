@@ -84,8 +84,8 @@ MIDDLEWARE_CLASSES = (
 AUTH_USER_MODULE = 'sodo.models'
 AUTH_ADMIN_MODULE = 'sodo.models'
 
-LOGIN_URL = '/account/login/'
-LOGOUT_URL = '/account/logout/'
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = '/'
 
 INSTALLED_APPS = (
