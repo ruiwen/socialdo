@@ -71,18 +71,85 @@ def list_show(request, index):
 	
 	
 
-def show_user(request, username):
+def user_add_friend(request, username):
+	
+	if request.user.is_authenticated():
+		friend = User.all().filter("username =", username).get()
+		request.user.collaborators.append(friend.key())
+		request.user.put()
+		
+		
+		if friend.first_name and friend.last_name:
+			name = friend.get_full_name()
+		else:
+			name = friend.username
+		
+		message = _('Collaboration request sent to %(name)s') % {'name': name}
+		
+	else:
+		message = _("Whoops")
+		friend = User.get_by_id(int(userid))
 
-	# Retrieve user
-	user = User.all().filter("username =", username).get()
-	return render_to_response(request, 'user.html', {'user':user})
+	
+	uform = UserProfileForm(instance=friend)
+	
+	
+	return render_to_response(request, 'user/user.html', {'user':friend, 'success':message, 'uform':uform})
+
+
+def user_profile(request, username):
+
+	if request.method == 'GET':
+		# Retrieve user
+		user = User.all().filter("username =", username).get()
+		
+		uform = UserProfileForm(instance=user);
+		
+		return render_to_response(request, 'user/user.html', {'user':user, 'uform':uform})
+
+	elif request.method == 'POST':
+		
+		user = User.all().filter("username = ", username).get() # Retrieve the specified user
+		uform = UserProfileForm(request.POST, instance=user) # Populate the UserProfileForm with the input data from client side				
+
+		if uform.is_valid():
+
+			user = uform.save()									
+			cd = uform.cleaned_data
+			
+#			# Process the data in form.cleaned_data
+#			media = None
+#			try:
+#				media = Media()
+#				tmp_img = db.Blob(request.FILES['profile_image'].read())
+#				media.name = request.FILES['profile_image'].name
+#				media.is_blob = True
+#				media.blob_content = tmp_img
+#				media.content_type = request.FILES['profile_image'].content_type
+#				media.put()
+#			except KeyError:
+#				media = None
+#
+#			if media:
+#				user.profile_image = media
+#				user.put()
+	
+			
+			message = {'text': _("Profile updated"), 'type':'success'}
+		else:
+			#uform = UserProfileForm(instance=user)
+			message = {'text':_("Profile update failed"), 'type':'error'}		
+			return render_to_response(request, 'user/user.html', {'uform':uform, 'user':user, 'message':message, 'errors':uform.errors })
+
+		return render_to_response(request, 'user/user.html', {'uform':uform, 'user':user, 'message':message})
+
 	
 	
 def user_register(request):
 
 	if request.method == 'GET':
 		uform = UserRegistrationForm()
-		return render_to_response(request, 'register.html', {'uform':uform})
+		return render_to_response(request, 'user/register.html', {'uform':uform})
 		
 	elif request.method == 'POST':
 		
@@ -97,14 +164,14 @@ def user_register(request):
 				login(request, auser)
 				return HttpResponseRedirect('/')
 
-		return render_to_response(request, 'register.html', {'uform':uform})	
+		return render_to_response(request, 'user/register.html', {'uform':uform})	
 
 
 def user_login(request):
 	
 	if request.method == 'GET':
 		uform = UserLoginForm()
-		return render_to_response(request, 'login.html', {'uform':uform})
+		return render_to_response(request, 'user/login.html', {'uform':uform})
 		
 	elif request.method == 'POST':
 		
@@ -116,9 +183,9 @@ def user_login(request):
 				login(request, user)
 				return HttpResponseRedirect(reverse('sodo.index'))
 		
-		return render_to_response(request, 'login.html', {'uform':uform})
+		return render_to_response(request, 'user/login.html', {'uform':uform})
 	
 def user_logout(request):
 	logout(request)
-	return render_to_response(reverse('sodo.index'))
+	return HttpResponseRedirect(reverse('sodo.index'))
 	

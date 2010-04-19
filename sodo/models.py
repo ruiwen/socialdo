@@ -13,6 +13,7 @@ class Media(db.Model):
         
 class User(User):	
 	profile_image = db.ReferenceProperty(Media, collection_name="user_images", required=False)
+	collaborators = db.ListProperty(db.Key, default=[])
 	
 
 class List(db.Model):

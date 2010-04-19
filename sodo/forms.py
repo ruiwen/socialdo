@@ -18,6 +18,7 @@ class ListCreateForm(forms.ModelForm):
 		
 
 
+# User Forms
 class UserLoginForm(forms.ModelForm):
 
 	password = forms.CharField(widget=forms.PasswordInput(render_value=False),
@@ -27,6 +28,13 @@ class UserLoginForm(forms.ModelForm):
 		model = User
 		fields = ('username',)
 
+
+class UserProfileForm(forms.ModelForm):
+	profile_image = forms.FileField(required=False, label=_("Upload a photo"))
+	class Meta:
+		model = User
+		fields = ('username', 'first_name', 'last_name', 'email')
+		
 
 
 class UserRegistrationForm(forms.ModelForm):

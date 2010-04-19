@@ -9,18 +9,19 @@
 
 <h1>{{ _("Sign up for Svarm Do") }}</h1>
 
-<div id="userForm">
+<div id="userForm" class='styled-form'>
+
+	{% if uform.non_field_errors %}
+		<div class='error'>{{ uform.non_field_errors }}</div>
+	{% endif %}
+
 	<form action="/register/" method="post">
-
-		{% if uform.non_field_errors %}
-			<div class='error'>{{ uform.non_field_errors }}</div>
-		{% endif %}
-
 		{% for field in uform.visible_fields %}
 			<div class="fieldWrapper">
 				{% if field.errors %}<div class='errorField'>{{ field.errors }}</div>{% endif %}
 				<div class="labelField">{{ field.label_tag }}</div>
 				<div class="valueField">{{ field }}</div>
+				<div class='clear'></div>
 			</div>
 		{% endfor %}
 	    

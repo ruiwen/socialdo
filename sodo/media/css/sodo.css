@@ -157,37 +157,14 @@ input[type=checkbox] {
 	width: 180px;
 }
 
+
 /** User Profile **/
 
-#user-profile {
-	font-size: 20px;
-}
-
-#user-profile ul {
-	list-style-type: none;
-}
-
-#user-profile label {
-	display: block;
-	float: left;
-	margin-right: 10px;
-	text-align: right;
-	width: 150px;
-}
-
-#user-profile input[type=text] {
-	border: 0px;
-	border-bottom: 1px dotted #5e5e5e;
-	font-family: "Georgia", "serif";
-	font-size: 20px;
-	padding-left: 7px;
-}
-
-.user-info {
+#user-profile .user-info {
 	float: left;
 	margin-right: 35px;
 }
 
-#user-lists {
+#user-profile #user-lists {
 	margin-top: 20px;
 }

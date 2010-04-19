@@ -1,23 +1,37 @@
 {% extends 'base.html' %}
 
+{% load i18n %}
+
 {% block title %}
-	{{ user.get_full_name }}{{ _("'s Profile") }}
+	{% if user.first_name %}{{ user.get_full_name }}{% else %}{{ user.username }}{% endif %}{{ _("'s Profile") }}
 {% endblock %}
 
 
 {% block content %}
 	
-	<h1>{{ user.get_full_name }}{{ _("'s Profile") }}</h1>
+	<div id="user-header">
+		<h1>{% if user.first_name %}{{ user.get_full_name }}{% else %}{{ user.username }}{% endif %}{{ _("'s Profile") }}</h1>
+		
+		
+		{% ifnotequal user request.user %}
+			{% if 'a' not in request.user.collaborators %}
+				<div id="user-add-friend">
+					<a href="{% url sodo.user.add.friend user.username %}">Add {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %} as a collaborator.</a>
+				</div>
+			{% endif %}
+		{% endifnotequal %}
+	</div>
 	
-	<div id="user-profile">
+	<div id="user-profile" class='styled-form'>
 				
 		<div class='user-info'>
+			<form method="post" action="user/{{ user.username }}/">
 			<ul>
-				<li><label for='user-username'>{{ _("Username") }}</label><input type='text' id='user-username' value='{{ user.username }}'></li>
-				<li><label for='user-firstnae'>{{ _("First name") }}</label><input type='text' id='user-firstname' value='{{ user.first_name }}'></li>
-				<li><label for='user-lastname'>{{ _("Last name") }}</label><input type='text' id='user-lastname' value='{{ user.last_name }}'></li>
-				<li><label for='user-email'>{{ _("Email address") }}</label><input type='text' id='user-email' value='{{ user.email }}'></li>			
+				{{ uform.as_ul }}
+				
+				{% ifequal user request.user %}<li><input type="submit" value="{{ _("Save") }}"></li>{% endifequal %}
 			</ul>
+			</form>
 		</div>
 		
 		<div class='user-image'>
@@ -28,7 +42,7 @@
 	<div class="clear"></div>
 	
 	<div id="user-lists">
-		<h2>{{ user.first_name }} {{ _("is part of the following lists") }}:</h2>
+		<h2>{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %} {{ _("is part of the following lists") }}:</h2>
 	
 		<ul>
 			{% for list in user.lists %}
@@ -42,10 +56,11 @@
 		</ul>
 	
 		<div id='new-list-link'>
-			{% if user.is_authenticated %}
+			{% ifequal request.user user %}
 				<a href="/list/new">{{ _("Create a new list >>") }}</a>
-			{% endif %}
+			{% endifequal %}
 		</div>
+
 	</div>
 	
 {% endblock %}
