@@ -30,6 +30,20 @@ div, p, ul, li {
 	clear: both;
 }
 
+/* =Clearfix (all browsers)
+--------------------------------*/
+.clearfix:after {
+content: ".";
+display: block;
+height: 0;
+clear: both;
+visibility: hidden;
+}
+/* IE6 */ 
+* html .clearfix {height: 1%;}
+/* IE7 */
+*:first-child+html .clearfix {min-height: 1px;}
+
 
 input[type=checkbox] {
 	border: 1px solid #ff0000;
@@ -101,8 +115,13 @@ input[type=checkbox] {
 }
 
 
-#user-login input[type=text],
-#user-login input[type=password] {
+/** Generic User form **/
+.styled-form {
+	font-size: 20px;
+}
+
+.styled-form input[type=text],
+.styled-form input[type=password] {
 	border: 0px;
 	border-bottom: 1px dotted #5e5e5e;
 	font-family: "Georgia", "serif";
@@ -110,11 +129,11 @@ input[type=checkbox] {
 	padding-left: 7px;
 }
 
-#user-login ul {
+.styled-form ul {
 	list-style-type: none;
 }
 
-#user-login label {
+.styled-form label {
 	display: block;
 	float: left;
 	margin-right: 10px;
