@@ -19,6 +19,7 @@
 
     {% block js %}
       <script type="text/javascript" src="{{ MEDIA_URL }}combined-{{ LANGUAGE_CODE }}.js"></script>
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     {% endblock %}
 
     {% block extra-head %}{% endblock %}
@@ -33,12 +34,12 @@
           <a href="http://code.google.com/p/app-engine-patch/">Visit app-engine-patch</a> |
           <a href="http://code.google.com/p/app-engine-patch/wiki/Documentation">Documentation</a>
           --
-          {% if user.is_authenticated %}
-            Welcome, {{ user.username }}!
+          {% if request.user.is_authenticated %}
+            Welcome, <a href='{% url sodo.user.show  request.user.username %}'>{{ request.user.username }}</a>!
             <a href="{% url django.contrib.auth.views.logout %}">Logout</a>
           {% else %}
             <a href="{% url django.contrib.auth.views.login %}">Login</a>
-            <a href="">Register</a>
+            <a href="{% url sodo.user.register %}">Register</a>
           {% endif %}
         </div>
       </div>
@@ -47,6 +48,7 @@
       {% block content-header %}
         {% if error %}<div class="error">{{ error }}</div>{% endif %}
         {% if info %}<div class="info">{{ info }}</div>{% endif %}
+        {% if success %}<div class="success">{{ success }}</div>{% endif %}
         {% if messages %}
           {% for message in messages %}
             <div class="info">{{ message }}</div>
