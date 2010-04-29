@@ -15,7 +15,7 @@
 		<div class='error'>{{ uform.non_field_errors }}</div>
 	{% endif %}
 
-	<form action="/register/" method="post">
+	<form action="/register/" method="post">{% csrf_token %}
 		{% for field in uform.visible_fields %}
 			<div class="fieldWrapper">
 				{% if field.errors %}<div class='errorField'>{{ field.errors }}</div>{% endif %}

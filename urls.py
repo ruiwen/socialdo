@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls.defaults import *
-from ragendja.urlsauto import urlpatterns
-from ragendja.auth.urls import urlpatterns as auth_patterns
-from myapp.forms import UserRegistrationForm
+from django.conf import settings
 from django.contrib import admin
-
 admin.autodiscover()
 
-handler500 = 'ragendja.views.server_error'
+#handler500 = 'ragendja.views.server_error'
 
 urlpatterns = patterns('',
-    ('^admin/(.*)', admin.site.root),
+    (r'^admin/', include(admin.site.urls)),
     
     # Social do
     (r'', include('sodo.urls')),
@@ -21,4 +18,10 @@ urlpatterns = patterns('',
     #url(r'^account/register/$', 'registration.views.register',
     #    kwargs={'form_class': UserRegistrationForm},
     #    name='registration_register'),
-) + urlpatterns + auth_patterns
+)
+
+# Serve static files in DEBUG = TRUE environment
+if settings.DEBUG:
+    urlpatterns = urlpatterns + patterns('',
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/ruiwen/Projects/SvarmDo/svarmdo/media/', 'show_indexes': True}),
+    )

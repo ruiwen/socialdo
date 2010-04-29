@@ -2,15 +2,14 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _, ugettext as __
-from ragendja.auth.models import UserTraits
 from django.forms.util import ErrorList
 
-from sodo.models import List
+from sodo.models import List, Item, UserProfile
 
 # List forms
 class ListCreateForm(forms.ModelForm):
 	
-	parent_list = forms.ModelChoiceField(required=False, queryset=List.all())
+	parent_list = forms.ModelChoiceField(required=False, queryset=List.objects.all(), label=_("Belongs to"))
 	
 	class Meta:
 		model = List
@@ -21,6 +20,7 @@ class ListCreateForm(forms.ModelForm):
 # User Forms
 class UserLoginForm(forms.ModelForm):
 
+	username = forms.CharField(help_text='')
 	password = forms.CharField(widget=forms.PasswordInput(render_value=False),
 		label=_(u'Password'))	
 
@@ -30,7 +30,8 @@ class UserLoginForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-	profile_image = forms.FileField(required=False, label=_("Upload a photo"))
+	username = forms.CharField(help_text='')
+	profile_image = forms.FileField(required=False, label=_("Upload a photo"))	
 	class Meta:
 		model = User
 		fields = ('username', 'first_name', 'last_name', 'email')
@@ -50,8 +51,8 @@ class UserRegistrationForm(forms.ModelForm):
 		in use.
 		
 		"""
-		user = User.get_by_key_name("key_"+self.cleaned_data['username'].lower())
-		if user and user.is_active:
+		#user = User.get_by_key_name("key_"+self.cleaned_data['username'].lower())
+		if User.objects.all().filter(username=self.cleaned_data['username'].lower()).filter(is_active=True):
 		    raise forms.ValidationError(__(u'This username is already taken. Please choose another.'))
 		return self.cleaned_data['username']
 
@@ -62,8 +63,7 @@ class UserRegistrationForm(forms.ModelForm):
 	    
 	    """
 	    email = self.cleaned_data['email'].lower()
-	    if User.all().filter('email =', email).filter(
-				'is_active =', True).count(1):
+	    if User.objects.all().filter(email=email).filter(is_active=True):
 			raise forms.ValidationError(__(u'This email address is already in use. Please supply a different email address.'))
 	    return email
 	
@@ -88,6 +88,7 @@ class UserRegistrationForm(forms.ModelForm):
 		#if cd['password1'] == cd['password2']:
 		user = super(UserRegistrationForm, self).save()
 		user.set_password(cd['password1'])
+		user.save()
 			
 		self.instance = user
 		return user

@@ -1,0 +1,22 @@
+Listen 8080
+<VirtualHost *:8080>
+	ServerAdmin webmaster@svarmdo.com
+
+	WSGIScriptAlias / /home/ruiwen/Projects/SvarmDo/svarmdo/apache/django.wsgi
+
+	Alias /media/	/home/ruiwen/Projects/SvarmDo/svarmdo/media
+
+	<Directory /home/ruiwen/Projects/SvarmDo/svarmdo/media>
+		Order allow,deny
+		Allow from all
+	</Directory>
+
+	ErrorLog /home/ruiwen/Projects/SvarmDo/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /home/ruiwen/Projects/SvarmDo/access.log combined
+
+</VirtualHost>

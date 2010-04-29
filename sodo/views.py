@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
-from ragendja.template import render_to_response
+#from ragendja.template import render_to_response
+from django.shortcuts import *
+from utils import render_to_response
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 
@@ -26,7 +28,7 @@ def debug(request):
 def index(request):
 	
 	# Get latest lists
-	lists = List.all().order('date_modified')	
+	lists = List.objects.order_by('date_modified')	
 	return render_to_response(request, 'index.html', {'lists':lists, 'user':request.user})
 
 
@@ -43,9 +45,9 @@ def list_new(request):
 			cd = lform.cleaned_data
 			
 			nlist = List(name=cd['name'], parent_list=cd['parent_list'], user=request.user)			
-			nlist.put()
+			nlist.save()
 		
-			return HttpResponseRedirect(reverse('sodo.show.list', args=(nlist.key().id(),)))					
+			return HttpResponseRedirect(reverse('sodo.show.list', args=(nlist.id,)))					
 		
 		return render_to_response(request, 'list/new.html', {'lform':lform})			
 
@@ -55,9 +57,9 @@ def list_item_new(request, list_index):
 	
 	if request.method == 'POST':
 		# Retrieve the list
-		l = List.get_by_id(int(list_index))
+		l = List.objects.get(id=int(list_index))
 		nitem = Item(user=request.user, parent_list=l, desc=request.POST['item-desc'])
-		nitem.put()
+		nitem.save()
 		
 	return HttpResponseRedirect(reverse('sodo.show.list', args=(int(list_index),)))
 	
@@ -66,7 +68,7 @@ def list_item_new(request, list_index):
 def list_show(request, index):
 	
 	# Retrieve list
-	the_list = List.get_by_id(int(index))
+	the_list = List.objects.get(id=int(index))
 	return render_to_response(request, 'list/show.html', {'thelist':the_list})
 	
 	
@@ -101,16 +103,16 @@ def user_profile(request, username):
 
 	if request.method == 'GET':
 		# Retrieve user
-		user = User.all().filter("username =", username).get()
+		profileuser = User.objects.get(username__exact=username)
 		
-		uform = UserProfileForm(instance=user);
+		uform = UserProfileForm(instance=profileuser);
 		
-		return render_to_response(request, 'user/user.html', {'user':user, 'uform':uform})
+		return render_to_response(request, 'user/user.html', {'profileuser':profileuser, 'uform':uform})
 
 	elif request.method == 'POST':
 		
-		user = User.all().filter("username = ", username).get() # Retrieve the specified user
-		uform = UserProfileForm(request.POST, instance=user) # Populate the UserProfileForm with the input data from client side				
+		profileuser = User.objects.get(username__exact=username) # Retrieve the specified user
+		uform = UserProfileForm(request.POST, instance=profileuser) # Populate the UserProfileForm with the input data from client side				
 
 		if uform.is_valid():
 
@@ -139,9 +141,9 @@ def user_profile(request, username):
 		else:
 			#uform = UserProfileForm(instance=user)
 			message = {'text':_("Profile update failed"), 'type':'error'}		
-			return render_to_response(request, 'user/user.html', {'uform':uform, 'user':user, 'message':message, 'errors':uform.errors })
+			return render_to_response(request, 'user/user.html', {'uform':uform, 'profileuser':profileuser, 'message':message, 'errors':uform.errors })
 
-		return render_to_response(request, 'user/user.html', {'uform':uform, 'user':user, 'message':message})
+		return render_to_response(request, 'user/user.html', {'uform':uform, 'profileuser':profileuser, 'message':message})
 
 	
 	
@@ -157,14 +159,13 @@ def user_register(request):
 		
 		if uform.is_valid():
 			user = uform.save()
-			user.put()
-			
+						
 			auser = authenticate(username=user.username, password=request.POST['password1'])
 			if auser and auser.is_authenticated():
 				login(request, auser)
 				return HttpResponseRedirect('/')
 
-		return render_to_response(request, 'user/register.html', {'uform':uform})	
+		return render_to_response(request, 	'user/register.html', {'uform':uform})	
 
 
 def user_login(request):

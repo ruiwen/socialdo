@@ -7,8 +7,9 @@
     xml:lang="{% firstof LANGUAGE_CODE 'en' %}"
     lang="{% firstof LANGUAGE_CODE 'en' %}">
   <head>
-    <title>{% block title %}{% endblock %} - site name</title>
+    <title>{% block title %}{% endblock %}</title>
     {% block css %}
+      <link href="{{ MEDIA_URL }}css/sodo.css" media="screen" rel="stylesheet" type="text/css" />
       <link rel="stylesheet" type="text/css"  media="screen, projection" href="{{ MEDIA_URL }}combined-{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}.css" />
       <link rel="stylesheet" type="text/css"  media="print" href="{{ MEDIA_URL }}combined-print-{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}.css" />
 	  <link rel="stylesheet" type="text/css"  media="screen, projection" href="{{ MEDIA_URL }}combined-screen.css" />
@@ -34,8 +35,8 @@
           <a href="http://code.google.com/p/app-engine-patch/">Visit app-engine-patch</a> |
           <a href="http://code.google.com/p/app-engine-patch/wiki/Documentation">Documentation</a>
           --
-          {% if request.user.is_authenticated %}
-            Welcome, <a href='{% url sodo.user.show  request.user.username %}'>{{ request.user.username }}</a>!
+          {% if user.is_authenticated %}
+            Welcome, <a href='{% url sodo.user.show user.username %}'>{{ user.username }}</a>!
             <a href="{% url django.contrib.auth.views.logout %}">Logout</a>
           {% else %}
             <a href="{% url django.contrib.auth.views.login %}">Login</a>

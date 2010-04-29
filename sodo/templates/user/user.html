@@ -3,63 +3,67 @@
 {% load i18n %}
 
 {% block title %}
-	{% if user.first_name %}{{ user.get_full_name }}{% else %}{{ user.username }}{% endif %}{{ _("'s Profile") }}
+	{% if profileuser.first_name %}{{ profileuser.get_full_name }}{% else %}{{ profileuser.username }}{% endif %}{{ _("'s Profile") }}
 {% endblock %}
 
 
 {% block content %}
 	
 	<div id="user-header">
-		<h1>{% if user.first_name %}{{ user.get_full_name }}{% else %}{{ user.username }}{% endif %}{{ _("'s Profile") }}</h1>
+		<h1>{% if profileuser.first_name %}{{ profileuser.get_full_name }}{% else %}{{ profileuser.username }}{% endif %}{{ _("'s Profile") }}</h1>
 		
 		
-		{% ifnotequal user request.user %}
-			{% if 'a' not in request.user.collaborators %}
-				<div id="user-add-friend">
-					<a href="{% url sodo.user.add.friend user.username %}">Add {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %} as a collaborator.</a>
-				</div>
-			{% endif %}
-		{% endifnotequal %}
+		{% if user.is_authenticated %}
+			{% ifnotequal profileuser user %}
+				{% if profileuser not in user.collaborators.all %}
+					<div id="user-add-friend">
+						<a href="{% url sodo.user.add.friend user.username %}">Add {% if profileuser.first_name %}{{ profileuser.first_name }}{% else %}{{ profileuser.username }}{% endif %} as a collaborator.</a>
+					</div>
+				{% endif %}
+			{% endifnotequal %}
+		{% endif %}
 	</div>
 	
 	<div id="user-profile" class='styled-form'>
 				
 		<div class='user-info'>
-			<form method="post" action="user/{{ user.username }}/">
+			<form method="post" action="/user/{{ user.username }}/">{% csrf_token %}
 			<ul>
 				{{ uform.as_ul }}
 				
-				{% ifequal user request.user %}<li><input type="submit" value="{{ _("Save") }}"></li>{% endifequal %}
+				{% ifequal profileuser user %}<li><input type="submit" value="{{ _("Save") }}"></li>{% endifequal %}
 			</ul>
 			</form>
 		</div>
 		
 		<div class='user-image'>
-			<img src="{{ MEDIA_URL }}global/img/generic-user.png" title="{{ user.get_full_name }}">
+			<img src="{{ MEDIA_URL }}img/generic-user.png" title="{% if profileuser.first_name %}{{ profileuser.get_full_name }}{% else %}{{ profileuser.username }}{% endif %}">
 		</div>
 	</div>
 	
 	<div class="clear"></div>
 	
 	<div id="user-lists">
-		<h2>{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %} {{ _("is part of the following lists") }}:</h2>
+		<h2>{% if profileuser.first_name %}{{ profileuser.first_name }}{% else %}{{ profileuser.username }}{% endif %} {{ _("is part of the following lists") }}:</h2>
 	
 		<ul>
-			{% for list in user.lists %}
+			{% for list in profileuser.lists.all %}
 				<div class='list'>
 					<ul>
-						<li class='list-name'><a href="/list/{{ list.key.id }}/">{{ list.name }}</a></li>
+						<li class='list-name'><a href="/list/{{ list.id }}/">{{ list.name }}</a></li>
 						<li class='list-item-count'>{{ list.list_items.count }} {{ _("items") }}</li>
 					</ul>
 				</div>
+			{% empty %}
+				<h1>{{ _("Whoops. No lists yet!") }}</h1>
 			{% endfor %}
 		</ul>
 	
-		<div id='new-list-link'>
-			{% ifequal request.user user %}
+		{% ifequal user profileuser %}
+			<div id='new-list-link'>
 				<a href="/list/new">{{ _("Create a new list >>") }}</a>
-			{% endifequal %}
-		</div>
+			</div>
+		{% endifequal %}
 
 	</div>
 	

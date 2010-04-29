@@ -18,7 +18,7 @@
 	{% endif %}
 
 	<div id="list-new">
-		<form class="styled-form" method="post" action="{% url sodo.list.new %}">
+		<form class="styled-form" method="post" action="{% url sodo.list.new %}">{% csrf_token %}
 			<ul>
 				{{ lform.as_ul }}
 				<li><input type="submit" value="{{ _("Create the form") }}"></li>
