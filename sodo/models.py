@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, UserManager
 import os
          
 def get_image_path(instance, filename):
@@ -15,10 +15,24 @@ def get_image_path(instance, filename):
 #	content_type = models.CharField()
         
 
-class UserProfile(models.Model):	
-	user = models.ForeignKey(User, unique=True)
+#class UserProfile(models.Model):	
+#	user = models.ForeignKey(User, unique=True)
+#	profile_image = models.ImageField(upload_to=get_image_path, blank=True)
+#	collaborators = models.ManyToManyField("self", symmetrical=False)
+
+class User(User):
+	"""Custom User model, extending Django's default User"""
 	profile_image = models.ImageField(upload_to=get_image_path, blank=True)
-	collaborators = models.ManyToManyField("self", symmetrical=False)
+	collaborators = models.ManyToManyField("self", symmetrical=False, blank=True)
+	
+	objects = UserManager()
+	
+	def __unicode__(self):
+		if self.first_name and self.last_name:
+			return self.get_full_name()
+		else:
+			return self.username
+	
 	
 
 class List(models.Model):

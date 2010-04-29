@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _, ugettext as __
 from django.forms.util import ErrorList
 
-from sodo.models import List, Item, UserProfile
+from sodo.models import *
+#from sodo.models import List, Item, User
 
 # List forms
 class ListCreateForm(forms.ModelForm):

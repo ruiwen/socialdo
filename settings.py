@@ -82,7 +82,7 @@ LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = '/'
 
-AUTH_PROFILE_MODULE = 'sodo.UserProfile'
+#AUTH_PROFILE_MODULE = 'sodo.UserProfile'
 
 ROOT_PATH = os.path.dirname(__file__)
 TEMPLATE_DIRS = (
@@ -106,4 +106,9 @@ INSTALLED_APPS = (
     'sodo',
 )
 
+AUTHENTICATION_BACKENDS = (
+	'sodo.auth_backends.UserModelBackend',
+)
+
+CUSTOM_USER_MODEL = 'sodo.User'
 
