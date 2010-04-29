@@ -3,21 +3,20 @@
 {% load i18n %}
 
 {% block title %}
-	{% if profileuser.first_name %}{{ profileuser.get_full_name }}{% else %}{{ profileuser.username }}{% endif %}{{ _("'s Profile") }}
+	{{ profileuser }}{{ _("'s Profile") }}
 {% endblock %}
 
 
 {% block content %}
 	
 	<div id="user-header">
-		<h1>{% if profileuser.first_name %}{{ profileuser.get_full_name }}{% else %}{{ profileuser.username }}{% endif %}{{ _("'s Profile") }}</h1>
-		
+		<h1>{{ profileuser }}{{ _("'s Profile") }}</h1>		
 		
 		{% if user.is_authenticated %}
 			{% ifnotequal profileuser user %}
 				{% if profileuser not in user.collaborators.all %}
 					<div id="user-add-friend">
-						<a href="{% url sodo.user.add.friend user.username %}">Add {% if profileuser.first_name %}{{ profileuser.first_name }}{% else %}{{ profileuser.username }}{% endif %} as a collaborator.</a>
+						<a href="{% url sodo.user.add.friend profileuser.username %}">Add {{ profileuser }} as a collaborator.</a>
 					</div>
 				{% endif %}
 			{% endifnotequal %}

@@ -75,28 +75,28 @@ def list_show(request, index):
 
 def user_add_friend(request, username):
 	
+	friend = User.objects.get(username=username)
 	if request.user.is_authenticated():
-		friend = User.all().filter("username =", username).get()
-		request.user.collaborators.append(friend.key())
-		request.user.put()
+		
+		request.user.collaborators.add(friend.id)
+		request.user.save()
 		
 		
-		if friend.first_name and friend.last_name:
-			name = friend.get_full_name()
-		else:
-			name = friend.username
+#		if friend.first_name and friend.last_name:
+#			name = friend.get_full_name()
+#		else:
+#			name = friend.username
 		
-		message = _('Collaboration request sent to %(name)s') % {'name': name}
+		message = _('Collaboration request sent to %(name)s') % {'name': friend}
 		
 	else:
 		message = _("Whoops")
-		friend = User.get_by_id(int(userid))
 
 	
 	uform = UserProfileForm(instance=friend)
 	
 	
-	return render_to_response(request, 'user/user.html', {'user':friend, 'success':message, 'uform':uform})
+	return render_to_response(request, 'user/user.html', {'profileuser':friend, 'success':message, 'uform':uform})
 
 
 def user_profile(request, username):
