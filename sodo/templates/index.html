@@ -1,24 +1,106 @@
 {% extends 'base.html' %}
 
+{% load i18n %}
+
 {% block title %}
-	Social Do Listing
+	{{ _("SvarmDo Listing") }}
 {% endblock %}
 
 
 {% block content %}
 
-	<h1>{{ _("Most recent lists") }}</h1>
+	<div id="home">
+	{% if user.is_authenticated %}
+		<div id="new-input">
+			<form class="styled-form" method="post" action="{% url sodo.item.new %}">{% csrf_token %}
+				<input type="text" name="item_name" value="{{ _("What do you need to get done") }}?"><input type="submit" value="{{ _("Get it done") }}!">
+				<!--<input type="hidden" name="item_primary_list_id">-->
 
-	<div id="lists">
-		{% for list in lists %}
-			<div class='list'>
+	
+				<div id="new-input-tags" class="clearfix">
+					<span>{{ _("Most recent") }}:</span>
+					<ul class="clearfix">
+						{% for list in user.lists %}
+							<li>
+								<input type="radio" name="list-tag" id="list-tag-{{ list.id }}" value="{{ list.id }}" {% if forloop.first %}checked{% endif %}>
+								<label for="list-tag-{{ list.id }}"><span class="list-tag {% if forloop.first %}list-tag-selected{% endif %}">{{ list }}</span></label>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</form>
+		</div>
+	
+		<div id="ongoing" class="task-section">
+			<div id="ongoing-progress">
+				{{ items_progress }}%
+			</div>
+			<h1>{{ _("Ongoing")|upper }}</h1>	
+			<p class="caption">{{ _("Items pending completion") }}</p>
+			<div id="ongoing-items">
 				<ul>
-					<li class='list-item-count'>{{ list.list_items.count }}</li>
-					<li class='list-name'><a href="/list/{{ list.id }}/">{{ list.name }}</a></li>					
-					<li><div class='list-user-name'>by <a href='/user/{{ list.user.username }}/'>{{ list.user.get_full_name }}</a></div></li>
+					{% for item in user.items.all %}
+						<li>
+							<input type="checkbox" {% if item.completed %}checked{% endif %}>
+							<span class="ongoing-item-name item-name{% if item.completed %}item-completed{% endif %}">{{ item }}</span>
+							<span class="ongoing-item-list item-list"><a href="{% url sodo.list.show item.primary_list.id %}">{{ item.primary_list }}</a></span>
+						</li>			
+					{% endfor %}
 				</ul>
 			</div>
-		{% endfor %}
-	</div>
+		</div>
+	
+		<div id="incoming" class="task-section">
+			<h1>{{ _("Incoming")|upper }}</h1>
+			<p class="caption">{{ _("Items you have not accepted into your stream.") }}</p>
+			<ul>
+				{% for item in user.items.all %}
+					<li>
+						<input type="checkbox" {% if item.completed %}checked{% endif %}>
+						<span class="incoming-item-name item-name">{{ item }}</span>
+						<span class="incoming-item-list item-list"><a href="{% url sodo.list.show item.primary_list.id %}">{{ item.primary_list }}</a></span>
+					</li>			
+				{% endfor %}
+			</ul>
+		</div>
+		
+		<!--
+		<h1>{{ _("Most recent lists") }}</h1>
+		<div id="lists">
+			{% for list in lists %}
+				<div class='list'>
+					<ul>
+						<li class='list-item-count'>{{ list.primary_items.count }}</li>
+						<li class='list-name'><a href="/list/{{ list.id }}/">{{ list.name }}</a></li>					
+						<li><div class='list-user-name'>by <a href='/user/{{ list.user.username }}/'>{{ list.user.get_full_name }}</a></div></li>
+					</ul>
+				</div>
+			{% endfor %}
+		</div>
+		-->
+	{% else %}
+		<!-- Default view for non-authenticated users -->
+		<div id="public-header">
+			<div id="public-description">
+				<h1>SvarmDo</h1>
+				
+				<h2>{{ _("Getting Things Done. Together.") }}</h2>
+				
+				<div id="public-image">
+					<img src="" title="SvarmDo" alt="Getting Things Done. Together.">
+				</div>
 
+
+				<p>
+					{% trans "It's no fun working through a ToDo list on your own." %}	
+				</p>
+				
+				<p>
+					{% trans "Pimp out your Svarm lists to friends and get them to do stuff for (or with) you!" %}
+				</p>
+				
+			</div>
+		</div>
+	{% endif %}	
+	</div>
 {% endblock %}

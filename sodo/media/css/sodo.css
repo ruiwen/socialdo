@@ -51,6 +51,20 @@ input[type=checkbox] {
 
 /** Main Index **/
 
+#home {}
+
+#home h1 {
+	margin-bottom: 0px;
+}
+
+.caption {
+	font-style: italic;
+}
+
+.task-section {
+	margin-bottom: 40px;
+}
+
 #lists {
 	background-color: #ddd;
 	padding: 5px 0px 5px 0px;
@@ -81,6 +95,86 @@ input[type=checkbox] {
 	float: right;
 }
 
+#new-input {
+	margin: 20px auto 20px;
+}
+
+#new-input input[type='text'] {	
+	font-size: 1.8em;
+	width: 700px;
+}
+
+#new-input-tags {
+	margin-top: 7px;
+	padding-left: 20px;
+}
+
+#new-input-tags ul li {
+	display: inline-block;
+}
+
+#new-input-tags ul li input[type=radio] {
+	display: none;
+}
+
+#new-input-tags ul li label {
+	display: inline-block;
+	font-size: 0.7em;
+	float: none;
+	width: auto;
+}
+
+.list-tag {
+	background-color: #ff8ba0;
+	color: #535353;
+	margin: 0px 7px;
+}
+
+.list-tag-selected {
+	background-color: lime;
+}
+
+
+#ongoing-items {
+}
+
+#ongoing-items ul li,
+#incoming ul li {
+	list-style-type: none;
+	margin: 7px 0px;
+	width: 500px;
+}
+
+.item-name {
+	display: inline-block;
+	font-size: 1.8em;
+	width: 15em;
+}
+
+.item-list {
+	font-size: 0.9em;
+	text-align: left;
+	width: 10em;
+}
+
+#ongoing-progress {
+	float: right;
+	font-size: 10em;
+}
+
+.item-completed {
+	color: #dedede;
+	text-decoration: line-through;
+}
+
+/** Public view - non-authenticated **/
+#public-header {
+	font-size: 2.0em;
+}
+
+#public-header p{
+	margin: 15px 0px;
+}
 
 /** List view **/
 

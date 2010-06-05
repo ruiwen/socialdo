@@ -10,6 +10,9 @@ urlpatterns = patterns('',
 	url(r'list/(?P<index>\d+)/?$', list_show, name="sodo.show.list"),
 	url(r'list/new/?$', list_new, name="sodo.list.new"),
 	url(r'list/(?P<list_index>\d+)/new/item/?$', list_item_new, name="sodo.list.item.new"),
+
+	# Item method
+	url(r'item/new/?$', item_new, name="sodo.item.new"),
 	
 	# User methods
 	url(r'user/(?P<username>\w+)/?$', user_profile, name="sodo.user.show"),

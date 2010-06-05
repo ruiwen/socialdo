@@ -26,11 +26,19 @@ def debug(request):
 
 
 def index(request):
-	
+
 	# Get latest lists
 	lists = List.objects.order_by('date_modified')	
-	return render_to_response(request, 'index.html', {'lists':lists, 'user':request.user})
+	
+	if request.user.is_authenticated():
+		items = request.user.items.order_by('date_added')
+		items_completed = request.user.items.filter(completed=True).count()
+		items_incomplete = request.user.items.filter(completed=False).count()
+		items_progress = int(( float(items_completed) / float(items_incomplete) ) * 100)
+		return render_to_response(request, 'index.html', {'lists':lists, 'items_progress':items_progress})
 
+	else:
+		return render_to_response(request, 'index.html', {'lists':lists})
 
 def list_new(request):
 
@@ -98,6 +106,24 @@ def user_add_friend(request, username):
 	
 	return render_to_response(request, 'user/user.html', {'profileuser':friend, 'success':message, 'uform':uform})
 
+
+def item_new(request):
+	if request.method == 'POST':
+		
+		try:
+			i = Item(user=request.user, desc=request.POST['item_name'], primary_list=List.objects.get(id=request.POST['list-tag']))
+			i.save()
+			
+			messages.success(request, _("Item added successfully"))
+		
+		except Exception:
+			messages.error(request, _("Whoops. Failed to create new item"))	
+		
+		
+		return HttpResponseRedirect(request.META['HTTP_REFERER'])		
+		
+	else:	
+		return HttpResponseRedirect(request.META['HTTP_REFERER'])		
 
 def user_profile(request, username):
 
