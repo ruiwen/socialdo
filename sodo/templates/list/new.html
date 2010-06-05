@@ -7,7 +7,7 @@
 
 {% block content %}
 
-	<h1>{{ _("What do you want a list about?") }}</h1>
+	<h1>{{ _("Getting stuff done! Yay!") }}</h1>
 
 	{% if lform.errors %}
 		<div id="list=error">
@@ -18,10 +18,14 @@
 	{% endif %}
 
 	<div id="list-new">
+	
+		{{ user }}{{ _("'s Lists") }} &nbsp;&gt;&nbsp; 
+	
+	
 		<form class="styled-form" method="post" action="{% url sodo.list.new %}">{% csrf_token %}
 			<ul>
 				{{ lform.as_ul }}
-				<li><input type="submit" value="{{ _("Create the form") }}"></li>
+				<li><input type="submit" value="{{ _("Create the list") }}"></li>
 			</ul>			
 		</form>
 	</div>
