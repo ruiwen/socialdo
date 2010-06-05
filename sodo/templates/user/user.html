@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
-{% load i18n %}
 
 {% block title %}
 	{{ profileuser }}{{ _("'s Profile") }}
@@ -46,11 +45,11 @@
 		<h2>{% if profileuser.first_name %}{{ profileuser.first_name }}{% else %}{{ profileuser.username }}{% endif %} {{ _("is part of the following lists") }}:</h2>
 	
 		<ul>
-			{% for list in profileuser.lists.all %}
+			{% for list in profileuser.lists %}
 				<div class='list'>
 					<ul>
-						<li class='list-name'><a href="/list/{{ list.id }}/">{{ list.name }}</a></li>
-						<li class='list-item-count'>{{ list.list_items.count }} {{ _("items") }}</li>
+						<li class='list-name'><a href="{% url sodo.list.show list.id %}">{{ list.name }}</a></li>
+						<li class='list-item-count'>{{ list.primary_items.count }} {{ _("items") }}</li>
 					</ul>
 				</div>
 			{% empty %}
