@@ -219,7 +219,11 @@ def user_register(request):
 		
 		if uform.is_valid():
 			user = uform.save()
-						
+			
+			# Create the default list for this new User
+			l = List(owner=user, name=user.username.capitalize(), desc=_("Default list for %(username)s" % {'username':user.username}))
+			l.save()		
+			
 			auser = authenticate(username=user.username, password=request.POST['password1'])
 			if auser and auser.is_authenticated():
 				login(request, auser)
