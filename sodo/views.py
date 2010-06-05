@@ -36,7 +36,13 @@ def index(request):
 		items = request.user.items.order_by('date_added')
 		items_completed = request.user.items.filter(completed=True).count()
 		items_incomplete = request.user.items.filter(completed=False).count()
-		items_progress = int(( float(items_completed) / float(items_incomplete) ) * 100)
+		
+		# Make sure we don't divide by 0
+		if items_completed > 0:
+			items_progress = int(( float(items_completed) / float(items_incomplete) ) * 100)
+		else:
+			items_progress = 0
+			
 		return render_to_response(request, 'index.html', {'lists':lists, 'items_progress':items_progress})
 
 	else:
