@@ -15,6 +15,7 @@ a:hover {
 	color: #888;
 }
 
+
 /** Reset **/
 div, p, ul, li {
 	border: 0px;
@@ -23,7 +24,8 @@ div, p, ul, li {
 
 /** Generic classes **/
 .container {
-	width: 100%;
+	margin: auto;
+	width: 800px;
 }
 
 .clear {
@@ -48,6 +50,21 @@ visibility: hidden;
 input[type=checkbox] {
 	border: 1px solid #ff0000;
 }
+
+/** Header **/
+
+
+/** Footer **/
+#footer {
+	margin: 20px auto 20px;
+	text-align: center;
+	width 98%;	
+}
+#footer ul li {
+	display: inline;
+	list-style-type: none;
+}
+
 
 /** Main Index **/
 
