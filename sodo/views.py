@@ -103,7 +103,7 @@ def list_add_collaborator(request):
 				l.collaborators.add(u)
 				messages.success(request, _("Collaboration request sent!"))
 			
-		except DoesNotExist:
+		except User.DoesNotExist:
 			messages.error(request, _("User not found =("))
 			
 		except Exception:
