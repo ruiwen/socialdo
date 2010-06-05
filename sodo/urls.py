@@ -7,13 +7,14 @@ urlpatterns = patterns('',
 	url(r'^$', index, name='sodo.index'),
 	
 	# List methods
-	url(r'list/(?P<index>\d+)/?$', list_show, name="sodo.show.list"),
+	url(r'list/(?P<index>\d+)/?$', list_show, name="sodo.list.show"),
 	url(r'list/new/?$', list_new, name="sodo.list.new"),
 	url(r'list/(?P<list_index>\d+)/new/item/?$', list_item_new, name="sodo.list.item.new"),
+	url(r'list/collaborators/add/?', list_add_collaborator, name="sodo.list.collaborator.add"),
 
 	# Item method
 	url(r'item/new/?$', item_new, name="sodo.item.new"),
-	
+
 	# User methods
 	url(r'user/(?P<username>\w+)/?$', user_profile, name="sodo.user.show"),
 	url(r'user/(?P<username>\w+)/add/friend/?$', user_add_friend, name="sodo.user.add.friend"),

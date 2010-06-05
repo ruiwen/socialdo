@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.utils.translation import ugettext as _
 #from ragendja.template import render_to_response
 from django.shortcuts import *
 from utils import render_to_response
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.db.models import Q
 
 # Models
 from sodo.models import *
@@ -79,7 +81,33 @@ def list_show(request, index):
 	the_list = List.objects.get(id=int(index))
 	return render_to_response(request, 'list/show.html', {'thelist':the_list})
 	
+
+
+def list_add_collaborator(request):
 	
+	if request.method == 'POST':
+		
+		try:
+			l = List.objects.get(id=request.POST['list-id'])
+			
+			# Hunt for the user specified
+			u = User.objects.get(Q(username=request.POST['user-value']) | Q(email=request.POST['user-value']))
+			
+			if u is not None:
+				l.collaborators.add(u)
+				messages.success(request, _("Collaboration request sent!"))
+			
+		except DoesNotExist:
+			messages.error(request, _("User not found =("))
+			
+		except Exception:
+			messages.error(request, _("Unable to send collaboration request"))
+		
+		return HttpResponseRedirect(request.META['HTTP_REFERER'])
+		
+	else:
+		return HttpResponseForbidden()
+
 
 def user_add_friend(request, username):
 	

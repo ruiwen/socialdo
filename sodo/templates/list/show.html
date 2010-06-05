@@ -3,28 +3,30 @@
 {% load humanize %}
 
 {% block title %}
-	List {{ thelist.name }} by {% if thelist.user.get_full_name %}{{ thelist.user.get_full_name }}{% else %}{{ thelist.user.username }}{% endif %}
+	List {{ thelist.name }} by {{ thelist.user }}
 {% endblock %}
 
 {% block content %}
 
-	<h1>{{ thelist.name }} by <a href='/user/{{ thelist.user.username }}/'>{% if thelist.user.get_full_name %}{{ thelist.user.get_full_name }}{% else %}{{ thelist.user.username }}{% endif %}</a></h1>
+	<h1>{{ thelist.name }} by <a href='/user/{{ thelist.owner.username }}/'>{{ thelist.owner }}</a></h1>
+
+	<div id="thelist-collaborators">	
+		{{ _("Collaborators") }}:
+		<ul>
+			{% for col in thelist.collaborators.all %}
+				{% ifequal user col %}
+					<li class="list-collaborator">{{ _("you") }}</li>
+				{% else %}
+					<li class="list-collaborator"><a href="{% url sodo.user.show col.username %}">{{ col }}</a></li>
+				{% endifequal %}
+			{% empty %}
+				<li class="list-collaborator">{{ _("No collaborators yet.") }} <a href="">{{ _("Invite some?") }}</a></li>			
+			{% endfor %}
+		</ul>
+	</div>
 
 	<div id='thelist' class='styled-form'>
-		{% for item in thelist.list_items.iterator %}
-			<div class='list-item {% if item.completed %}completed{% endif %}'>
-				<ul class='clearfix'>
-					<li class='list-item-completed'><input type='checkbox' {% if item.completed %} checked {% endif %}></li>
-					<li class='list-item-desc'>{{ item.desc|truncatewords:10 }}</li>
-					<li class='list-item-date-added'>{% if item.date_added %}{{ _("Added")}}: {{ item.date_added|naturalday }}{% else %}--{% endif %}</li>
-					<li class='list-item-date-completed clearfix'>{% if item.date_completed %}{{ _("Completed") }}: {{ item.date_completed|naturalday }}{% else %}--{% endif %}</li>
-				</ul>
-			</div>
-		{% empty %}
-			<h3>{{ _("No items in this list") }}</h3>			
-		{% endfor %}
-		
-		{% ifequal user thelist.user %}
+		{% if user == thelist.owner or user in thelist.collaborators.all %}
 			<div class='list-item'>
 				<ul class='clearfix'>
 					<form method="post" action="{% url sodo.list.item.new thelist.id %}">{% csrf_token %}
@@ -32,7 +34,43 @@
 					</form>
 				</ul>
 			</div>	
-		{% endifequal %}
+		{% endif %}
+
+		
+		<ul class="list-items">
+			{% for item in thelist.primary_items.iterator %}
+				<li class="list-item {% if item.completed %}completed{% endif %}">
+					<ul>
+						<li class='list-item-completed'><input type='checkbox' {% if item.completed %} checked {% endif %}></li>
+						<li class='list-item-desc'>{{ item.desc|truncatewords:10 }}</li>
+						<li class="list-item-user"><a href="{% url sodo.user.show item.user.username %}">{{ item.user }}</a></li>
+						<li class='list-item-date-added'>{% if item.date_added %}{{ _("Added")}}: {{ item.date_added|naturalday }}{% else %}--{% endif %}</li>
+						<li class='list-item-date-completed'>{% if item.date_completed %}{{ _("Completed") }}: {{ item.date_completed|naturalday }}{% else %}--{% endif %}</li>
+					</ul>								
+				</li>
+			{% empty %}
+				<h3>{{ _("No items in this list") }}</h3>
+			{% endfor %}
+		</ul>
 	</div>
+
+	<div id="thelist-sublists">
+		{{ _("Sub-lists") }}: 
+		<ul>
+			{% for sub in thelist.sub_lists.all %}
+				<li class="list-sublist"><a href="{% url sodo.list.show sub.id %}">{{ sub }}</a></li>
+			{% empty %}
+				{{ _("None") }}
+			{% endfor %}
+		</ul>
+	</div>
+
+	<div id="thelist-links">
+		<ul>
+			<li><form class="styled-form" method="post" action="{% url sodo.list.collaborator.add %}">{% csrf_token %}<input type="hidden" value="{{ thelist.id }}" name="list-id"><input type="text" name="user-value"><input type="submit" value="{{ _("Add collaborator!") }}"></form><!--<a href="">{{ _("Add collaborators") }}</a>--></li>
+			<li><a href="">{{ _("Create sublist") }}</a></li>
+		</ul>
+	</div>
+
 
 {% endblock %}

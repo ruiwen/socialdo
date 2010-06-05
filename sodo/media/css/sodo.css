@@ -178,9 +178,22 @@ input[type=checkbox] {
 
 /** List view **/
 
+#thelist-collaborators {
+	font-size: 0.9em;
+	font-style: italic;
+	margin-bottom: 30px;
+}
+
+#thelist-collaborators ul li {
+	display: inline-block;
+	list-style-type: none;
+	margin-right: 10px;
+}
+
 #thelist {
 	font-size: 20px;
 }
+
 
 .completed {
 	color: #dedede;
@@ -195,23 +208,27 @@ input[type=checkbox] {
 }
 
 .list-item ul li {
-	/*display: inline;*/
-	float: left;
+	display: inline-block;
+	/*float: left;*/
 }
 
-.list-item .list-item-desc {
+.list-item-desc {
 	width: 12em;
 }
 
-.list-item .list-item-date-added,
-.list-item .list-item-date-completed {
-	font-size: x-small;
+.list-item-user {
+	font-size: 0.8em;
+}
+
+.list-item-date-added,
+.list-item-date-completed {
+	font-size: 0.5em;
 	margin-right: 9px;
 }
 
 
-.list-item .list-item-date-added:hover,
-.list-item .list-item-date-completed:hover {
+.list-item-date-added:hover,
+.list-item-date-completed:hover {
 	font-size: x-small;
 	margin-right: 9px;
 }
@@ -224,6 +241,19 @@ input[type=checkbox] {
 	padding-left: 25px;
 }
 
+#thelist-sublists {
+	font-style: italic;
+	margin: 30px 0px;
+	padding-left: 40px;
+}
+
+#thelist-links {
+	margin: 30px 0px;
+}
+
+#thelist-links ul li {
+	list-style-type: none;
+}
 
 /** Generic User form **/
 .styled-form {
