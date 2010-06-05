@@ -68,10 +68,10 @@ def list_item_new(request, list_index):
 	if request.method == 'POST':
 		# Retrieve the list
 		l = List.objects.get(id=int(list_index))
-		nitem = Item(user=request.user, parent_list=l, desc=request.POST['item-desc'])
+		nitem = Item(user=request.user, primary_list=l, desc=request.POST['item-desc'])
 		nitem.save()
 		
-	return HttpResponseRedirect(reverse('sodo.show.list', args=(int(list_index),)))
+	return HttpResponseRedirect(reverse('sodo.list.show', args=(int(list_index),)))
 	
 	
 
