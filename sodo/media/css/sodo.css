@@ -32,6 +32,10 @@ div, p, ul, li {
 	clear: both;
 }
 
+.hidden {
+	display: none !important;
+}
+
 /* =Clearfix (all browsers)
 --------------------------------*/
 .clearfix:after {
