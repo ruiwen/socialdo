@@ -3,7 +3,43 @@
 {% load humanize %}
 
 {% block title %}
-	List {{ thelist.name }} by {{ thelist.user }}
+	List {{ thelist.name }} by {{ thelist.owner }}
+{% endblock %}
+
+{% block js %}
+
+{{ block.super }}
+
+<script type="text/javascript">
+	$(document).ready = function() {
+
+			
+	};
+	
+	/** General event binding **/
+		
+	
+	sodo = (typeof(sodo) == 'undefined')?{}:sodo;
+	sodo.list = (typeof(sodo.list) == 'undefined')?{}:sodo.list;
+	
+	sodo.list.show_collaborator_add = function() {
+		$('#thelist-collaborator-add').removeClass('hidden');
+	}
+	
+	sodo.list.focus_collaborator_add = function(elem) {
+		if($(elem).val() == "{{ _("enter username or email address") }}") {
+			$(elem).val("");
+		}		
+	}
+	
+	sodo.list.blur_collaborator_add = function(elem) {
+		if($(elem).val() == "") {
+			$(elem).val("{{ _("enter username or email address") }}");
+		}
+	}
+	
+</script>
+
 {% endblock %}
 
 {% block content %}
@@ -20,7 +56,14 @@
 					<li class="list-collaborator"><a href="{% url sodo.user.show col.username %}">{{ col }}</a></li>
 				{% endifequal %}
 			{% empty %}
-				<li class="list-collaborator">{{ _("No collaborators yet.") }} <a href="">{{ _("Invite some?") }}</a></li>			
+				<li class="list-collaborator">{{ _("No collaborators yet.") }} <a href="javascript:sodo.list.show_collaborator_add();">{{ _("Invite some?") }}</a></li>	
+				<li id="thelist-collaborator-add" class="hidden">
+					<form class="styled-form" method="post" action="{% url sodo.list.collaborator.add %}">{% csrf_token %}
+						<input type="hidden" value="{{ thelist.id }}" name="list-id">
+						<input type="text" name="user-value" value="{{ _("enter username or email address") }}" onfocus="javascript:sodo.list.focus_collaborator_add($(this));" onblur="javascript:sodo.list.blur_collaborator_add($(this));">
+						<input type="submit" value="{{ _("Add collaborator!") }}">
+					</form>
+				</li>		
 			{% endfor %}
 		</ul>
 	</div>
@@ -67,7 +110,7 @@
 
 	<div id="thelist-links">
 		<ul>
-			<li><form class="styled-form" method="post" action="{% url sodo.list.collaborator.add %}">{% csrf_token %}<input type="hidden" value="{{ thelist.id }}" name="list-id"><input type="text" name="user-value"><input type="submit" value="{{ _("Add collaborator!") }}"></form><!--<a href="">{{ _("Add collaborators") }}</a>--></li>
+			<!--<li><form class="styled-form" method="post" action="{% url sodo.list.collaborator.add %}">{% csrf_token %}<input type="hidden" value="{{ thelist.id }}" name="list-id"><input type="text" name="user-value"><input type="submit" value="{{ _("Add collaborator!") }}"></form></li>-->
 			<li><a href="">{{ _("Create sublist") }}</a></li>
 		</ul>
 	</div>

@@ -208,7 +208,28 @@ input[type=checkbox] {
 #thelist-collaborators ul li {
 	display: inline-block;
 	list-style-type: none;
-	margin-right: 10px;
+	margin: 0px 10px 0px 0px;
+}
+
+#thelist-collaborator-add {
+		
+}
+
+#thelist-collaborator-add form {
+	font-size: 12px;
+}
+
+#thelist-collaborator-add input[type=text] {
+	color: #7e7e7e !important;
+	font-size: 1.1em !important;
+	font-style: italic;
+	padding: 0px !important;
+	width: 16em;
+}
+
+#thelist-collaborator-add input[type=submit] {
+	border: 1px solid green;
+	padding: 0px;
 }
 
 #thelist {
