@@ -33,9 +33,9 @@ def index(request):
 	lists = List.objects.order_by('date_modified')	
 	
 	if request.user.is_authenticated():
-		items = request.user.items.order_by('date_added')
-		items_completed = request.user.items.filter(completed=True).count()
-		items_incomplete = request.user.items.filter(completed=False).count()
+		items = request.user.owned_items.order_by('date_added')
+		items_completed = request.user.owned_items.filter(completed=True).count()
+		items_incomplete = request.user.owned_items.filter(completed=False).count()
 		
 		# Make sure we don't divide by 0
 		if items_completed > 0:

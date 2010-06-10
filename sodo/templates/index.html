@@ -75,7 +75,7 @@
 			<p class="caption">{{ _("Items pending completion") }}</p>
 			<div id="ongoing-items">
 				<ul>
-					{% for item in user.items.all %}
+					{% for item in user.owned_items.all %}
 						<li>
 							<input class="ongoing item-check" type="checkbox" {% if item.completed %}checked{% endif %}>
 							<span class="ongoing item-name{% if item.completed %}item-completed{% endif %}">{{ item }}</span>
@@ -90,7 +90,7 @@
 			<h1>{{ _("Incoming")|upper }}</h1>
 			<p class="caption">{{ _("Items you have not accepted into your stream.") }}</p>
 			<ul>
-				{% for item in user.items.all %}
+				{% for item in user.assigned_items.all %}
 					<li>
 						<input class="incoming item-check" type="checkbox" {% if item.completed %}checked{% endif %}>
 						<span class="incoming item-name">{{ item }}</span>

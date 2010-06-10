@@ -35,6 +35,13 @@ class User(User):
 			return list(chain(self.owned_lists.all(), self.shared_lists.all()))
 		else:
 			return self.owned_lists.all()
+
+	def items(self, with_assigned=True):
+		if with_assigned:
+			return list(chain(self.owned_items.all(), self.assigned_items.all()))
+		else:
+			return self.owned_items.all()
+
 		
 	def __unicode__(self):
 		if self.first_name and self.last_name:
@@ -94,7 +101,8 @@ class List(models.Model):
 	
 class Item(models.Model):
 	completed = models.BooleanField(default=False)
-	user = models.ForeignKey(User, related_name="items")
+	owner = models.ForeignKey(User, related_name="owned_items")
+	assignee = models.ForeignKey(User, related_name="assigned_items") 
 	desc = models.CharField(max_length=255)
 	primary_list = models.ForeignKey(List, related_name="primary_items")
 	secondary_lists = models.ManyToManyField(List, related_name="secondary_items", blank=True)
