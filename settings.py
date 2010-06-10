@@ -76,6 +76,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
+
 ROOT_URLCONF = 'svarmdo.urls'
 
 LOGIN_URL = '/login/'
@@ -104,6 +105,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.humanize', # Make it human http://docs.djangoproject.com/en/dev/ref/contrib/humanize/
     'sodo',
+	'south', # DB migration!
 )
 
 AUTHENTICATION_BACKENDS = (
