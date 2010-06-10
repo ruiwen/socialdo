@@ -167,7 +167,7 @@ input[type=checkbox] {
 }
 
 .item-name {
-	display: inline-block;
+	display: inline;
 	font-size: 1.8em;
 	width: 15em;
 }

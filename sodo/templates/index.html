@@ -6,6 +6,42 @@
 	{{ _("SvarmDo Listing") }}
 {% endblock %}
 
+{% block js %}
+{{ block.super }}
+<script type="text/javascript">
+
+	var svarmdo = (typeof(svarmdo) == 'undefined')?{}:svarmdo;
+	svarmdo.index = (typeof(svarmdo.index) == 'undefined')?{}:svarmdo.index;
+	
+	// Events for list-tags
+	$('.list-tag').live('click', function(event) {
+		// Remove .list-tag-selected from the entire range
+		$('.list-tag').removeClass('list-tag-selected');
+		
+		// Assign .list-tag-selected to the target element
+		$(event.target).addClass('list-tag-selected');
+	});
+
+
+	// 'done' event for Items
+	$('.item-check').live('change', function(event){
+		if($(event.target).attr('checked')) {
+			// Add the .item-completed class
+			$(event.target).siblings('.item-name').addClass('item-completed');
+			
+			// Fire the item-completion Ajax call
+			// TODO
+		}
+		else {
+			$(event.target).siblings('.item-name').removeClass('item-completed');
+			
+			// Fire the item-uncompletion Ajax call
+			// TODO
+		}
+	})
+
+</script>
+{% endblock %}
 
 {% block content %}
 
@@ -41,9 +77,9 @@
 				<ul>
 					{% for item in user.items.all %}
 						<li>
-							<input type="checkbox" {% if item.completed %}checked{% endif %}>
-							<span class="ongoing-item-name item-name{% if item.completed %}item-completed{% endif %}">{{ item }}</span>
-							<span class="ongoing-item-list item-list"><a href="{% url sodo.list.show item.primary_list.id %}">{{ item.primary_list }}</a></span>
+							<input class="ongoing item-check" type="checkbox" {% if item.completed %}checked{% endif %}>
+							<span class="ongoing item-name{% if item.completed %}item-completed{% endif %}">{{ item }}</span>
+							<span class="ongoing item-list"><a href="{% url sodo.list.show item.primary_list.id %}">{{ item.primary_list }}</a></span>
 						</li>			
 					{% endfor %}
 				</ul>
@@ -56,9 +92,9 @@
 			<ul>
 				{% for item in user.items.all %}
 					<li>
-						<input type="checkbox" {% if item.completed %}checked{% endif %}>
-						<span class="incoming-item-name item-name">{{ item }}</span>
-						<span class="incoming-item-list item-list"><a href="{% url sodo.list.show item.primary_list.id %}">{{ item.primary_list }}</a></span>
+						<input class="incoming item-check" type="checkbox" {% if item.completed %}checked{% endif %}>
+						<span class="incoming item-name">{{ item }}</span>
+						<span class="incoming item-list"><a href="{% url sodo.list.show item.primary_list.id %}">{{ item.primary_list }}</a></span>
 					</li>			
 				{% endfor %}
 			</ul>
