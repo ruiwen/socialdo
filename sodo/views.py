@@ -115,6 +115,26 @@ def list_add_collaborator(request):
 		return HttpResponseForbidden()
 
 
+def item_new(request):
+	if request.method == 'POST':
+		
+		try:
+			i = Item(user=request.user, desc=request.POST['item_name'], primary_list=List.objects.get(id=request.POST['list-tag']))
+			i.save()
+			
+			messages.success(request, _("Item added successfully"))
+		
+		except Exception:
+			messages.error(request, _("Whoops. Failed to create new item"))	
+		
+		
+		return HttpResponseRedirect(request.META['HTTP_REFERER'])		
+		
+	else:	
+		return HttpResponseRedirect(request.META['HTTP_REFERER'])	
+		
+	
+		
 def user_add_friend(request, username):
 	
 	friend = User.objects.get(username=username)
@@ -139,25 +159,7 @@ def user_add_friend(request, username):
 	
 	
 	return render_to_response(request, 'user/user.html', {'profileuser':friend, 'success':message, 'uform':uform})
-
-
-def item_new(request):
-	if request.method == 'POST':
-		
-		try:
-			i = Item(user=request.user, desc=request.POST['item_name'], primary_list=List.objects.get(id=request.POST['list-tag']))
-			i.save()
-			
-			messages.success(request, _("Item added successfully"))
-		
-		except Exception:
-			messages.error(request, _("Whoops. Failed to create new item"))	
-		
-		
-		return HttpResponseRedirect(request.META['HTTP_REFERER'])		
-		
-	else:	
-		return HttpResponseRedirect(request.META['HTTP_REFERER'])		
+	
 
 def user_profile(request, username):
 
