@@ -42,6 +42,21 @@ class User(User):
 		else:
 			return self.owned_items.all()
 
+	
+	def overall_progress(self, with_assigned=True):
+		# Returns aggregate of overall progress for this User
+		# If with_shared is True, returns progress inclusive of shared Lists
+		items_total = len(self.items(with_assigned))
+		
+		# Get count of completed items, depending on with_assigned
+		items_completed = self.owned_items.filter(completed=True).count()
+		if with_assigned:
+			items_completed += self.assigned_items.filter(completed=True).count()
+		
+		
+		return int(( float(items_completed) / float(items_total) ) * 100)
+
+			
 		
 	def __unicode__(self):
 		if self.first_name and self.last_name:

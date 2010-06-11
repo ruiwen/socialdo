@@ -33,16 +33,18 @@ def index(request):
 	lists = List.objects.order_by('date_modified')	
 	
 	if request.user.is_authenticated():
-		items = request.user.owned_items.order_by('date_added')
-		items_completed = request.user.owned_items.filter(completed=True).count()
-		items_incomplete = request.user.owned_items.filter(completed=False).count()
-		
-		# Make sure we don't divide by 0
-		if items_completed > 0:
-			items_progress = int(( float(items_completed) / float(items_incomplete) ) * 100)
-		else:
-			items_progress = 0
+#		items = request.user.owned_items.order_by('date_added')
+#		items_completed = request.user.owned_items.filter(completed=True).count()
+#		items_incomplete = request.user.owned_items.filter(completed=False).count()
+#		
+#		# Make sure we don't divide by 0
+#		if items_completed > 0:
+#			items_progress = int(( float(items_completed) / float(items_incomplete) ) * 100)
+#		else:
+#			items_progress = 0
 			
+		items_progress = request.user.overall_progress()
+		
 		return render_to_response(request, 'index.html', {'lists':lists, 'items_progress':items_progress})
 
 	else:
