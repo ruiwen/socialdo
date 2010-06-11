@@ -119,7 +119,7 @@ def item_new(request):
 	if request.method == 'POST':
 		
 		try:
-			i = Item(user=request.user, desc=request.POST['item_name'], primary_list=List.objects.get(id=request.POST['list-tag']))
+			i = Item(owner=request.user, desc=request.POST['item_name'], primary_list=List.objects.get(id=request.POST['list-tag']))
 			i.save()
 			
 			messages.success(request, _("Item added successfully"))
