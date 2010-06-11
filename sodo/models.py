@@ -102,7 +102,7 @@ class List(models.Model):
 class Item(models.Model):
 	completed = models.BooleanField(default=False)
 	owner = models.ForeignKey(User, related_name="owned_items")
-	assignee = models.ForeignKey(User, related_name="assigned_items") 
+	assignee = models.ForeignKey(User, related_name="assigned_items", blank=True, null=True) 
 	desc = models.CharField(max_length=255)
 	primary_list = models.ForeignKey(List, related_name="primary_items")
 	secondary_lists = models.ManyToManyField(List, related_name="secondary_items", blank=True)
