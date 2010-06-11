@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponseBadRequest
 from django.utils.translation import ugettext as _
 #from ragendja.template import render_to_response
 from django.shortcuts import *
@@ -8,6 +8,10 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import Q
+from django.core import serializers
+from django.utils import simplejson
+
+import datetime
 
 # Models
 from sodo.models import *
@@ -137,6 +141,60 @@ def item_new(request):
 		
 	
 		
+def item_status_update(request, item_id, status):
+	# Mark an Item's status. 'status' can either be 'complete' or 'incomplete'
+	
+	# Set up the error message
+	error = u""
+	
+	if request.method == 'POST':	
+		try:
+			i = Item.objects.get(id=item_id)
+			
+			# Check if user has rights to modify this Item
+			if i in request.user.items():
+				if status == 'complete':
+					i.completed_by = request.user
+					i.completed = True
+					i.date_completed = datetime.datetime.now()
+					i.save()
+					
+				elif status == 'incomplete':
+					i.completed = False
+					i.completed_by = None
+					i.date_completed = None
+					i.save()
+			
+			else:
+				return HttpResponseForbidden()
+		
+		except Exception as e:
+			error = e
+
+		# Was it an Ajax request?
+		if request.is_ajax():
+			# Return JSON if so
+			response = {}
+			if error != u"":
+				response.update({'error': error})
+
+			else:
+				response.update({'overall_progress': request.user.overall_progress()})
+				response.update({'success': True})
+				
+			return HttpResponse(simplejson.dumps(response), mimetype="application/json")
+		
+		else:
+			# 'Twas a normal request
+			#return HttpResponseRedirect(request.META['HTTP_REFERER'])
+			return HttpResponse(error)
+			
+	else:
+		# We shouldn't respond to any HTTP Request but POST
+		return HttpResponseBadRequest()
+		
+
+
 def user_add_friend(request, username):
 	
 	friend = User.objects.get(username=username)
