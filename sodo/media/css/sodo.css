@@ -55,6 +55,29 @@ input[type=checkbox] {
 	border: 1px solid #ff0000;
 }
 
+
+.button {
+	padding: 2px;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+}
+
+/** Message styling **/
+.messages {
+	list-style-type: none;
+	margin-top: 20px;
+	padding: 0px;
+}
+
+.success {
+	background-color: #DAF0DA;
+	border: 1px solid #006900;
+	color: #006900;
+	padding: 9px;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+}
+
 /** Header **/
 
 
@@ -146,13 +169,17 @@ input[type=checkbox] {
 }
 
 .list-tag {
-	background-color: #ff8ba0;
-	color: #535353;
+	/*background-color: #ff8ba0;*/
+	background-color: #4186D3;
+	border: 1px solid #04356C;
+	color: #FFF; /*#535353;*/
 	margin: 0px 7px;
 }
 
 .list-tag-selected {
-	background-color: lime;
+	background-color: #FFC873;
+	border: 1px solid #A66400;
+	color: #A66400;
 }
 
 

@@ -32,7 +32,7 @@
 	$('.item-check').live('change', function(event){
 		if($(event.target).attr('checked')) {
 			// Add the .item-completed class
-			$(event.target).siblings('.item-name').addClass('item-completed');
+			$(event.target).siblings('.item-desc').addClass('item-completed');
 			
 			// Fire the item-completion Ajax call
 			$.ajax({
@@ -52,7 +52,7 @@
 			})
 		}
 		else {
-			$(event.target).siblings('.item-name').removeClass('item-completed');
+			$(event.target).siblings('.item-desc').removeClass('item-completed');
 			
 			// Fire the item-uncompletion Ajax call
 			$.ajax({
@@ -92,7 +92,7 @@
 						{% for list in user.lists %}
 							<li>
 								<input type="radio" name="list-tag" id="list-tag-{{ list.id }}" value="{{ list.id }}" {% if forloop.first %}checked{% endif %}>
-								<label for="list-tag-{{ list.id }}"><span class="list-tag {% if forloop.first %}list-tag-selected{% endif %}">{{ list }}</span></label>
+								<label for="list-tag-{{ list.id }}"><span class="button list-tag {% if forloop.first %}list-tag-selected{% endif %}">{{ list }}</span></label>
 							</li>
 						{% endfor %}
 					</ul>
@@ -122,6 +122,7 @@
 				{% for item in user.assigned_items.all %}
 					<li>
 						<input class="incoming item-check" type="checkbox" {% if item.completed %}checked{% endif %} value="{{ item.id }}">
+						<span class="ongoing item-reassign button">{{ _("Reassign") }}</span>
 						<span class="incoming item-name">{{ item }}</span>
 						<span class="incoming item-list"><a href="{% url sodo.list.show item.primary_list.id %}">{{ item.primary_list }}</a></span>
 					</li>			
@@ -129,21 +130,7 @@
 			</ul>
 		</div>
 		
-		<!--
-		<h1>{{ _("Most recent lists") }}</h1>
-		<div id="lists">
-			{% for list in lists %}
-				<div class='list'>
-					<ul>
-						<li class='list-item-count'>{{ list.primary_items.count }}</li>
-						<li class='list-name'><a href="/list/{{ list.id }}/">{{ list.name }}</a></li>					
-						<li><div class='list-user-name'>by <a href='/user/{{ list.user.username }}/'>{{ list.user.get_full_name }}</a></div></li>
-					</ul>
-				</div>
-			{% endfor %}
-		</div>
-		-->
-	{% else %}
+		{% else %}
 		<!-- Default view for non-authenticated users -->
 		<div id="public-header">
 			<div id="public-description">

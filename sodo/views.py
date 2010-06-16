@@ -130,8 +130,8 @@ def item_new(request):
 			
 			messages.success(request, _("Item added successfully"))
 		
-		except Exception:
-			messages.error(request, _("Whoops. Failed to create new item"))	
+		except Exception as e:
+			messages.error(request, _("Whoops. Failed to create new item: %(error)s" % {'error':e}))	
 		
 		
 		return HttpResponseRedirect(request.META['HTTP_REFERER'])		

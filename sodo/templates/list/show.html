@@ -68,9 +68,9 @@
 		</ul>
 	</div>
 
-	<div id='thelist' class='styled-form'>
+	<div id='thelist'>
 		{% if user == thelist.owner or user in thelist.collaborators.all %}
-			<div class='list-item'>
+			<div class='list-item styled-form'>
 				<ul class='clearfix'>
 					<form method="post" action="{% url sodo.list.item.new thelist.id %}">{% csrf_token %}
 						<li class='list-item-desc'><input class='new-list-item-desc' type="text" name='item-desc' value="{{ _("Add new item") }}"></li>
