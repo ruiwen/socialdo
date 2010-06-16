@@ -82,15 +82,7 @@
 		
 		<ul class="list-items">
 			{% for item in thelist.primary_items.iterator %}
-				<li class="list-item {% if item.completed %}completed{% endif %}">
-					<ul>
-						<li class='list-item-completed'><input type='checkbox' {% if item.completed %} checked {% endif %}></li>
-						<li class='list-item-desc'>{{ item.desc|truncatewords:10 }}</li>
-						<li class="list-item-user"><a href="{% url sodo.user.show item.user.username %}">{{ item.user }}</a></li>
-						<li class='list-item-date-added'>{% if item.date_added %}{{ _("Added")}}: {{ item.date_added|naturalday }}{% else %}--{% endif %}</li>
-						<li class='list-item-date-completed'>{% if item.date_completed %}{{ _("Completed") }}: {{ item.date_completed|naturalday }}{% else %}--{% endif %}</li>
-					</ul>								
-				</li>
+				{% include 'item/item.html' %}
 			{% empty %}
 				<h3>{{ _("No items in this list") }}</h3>
 			{% endfor %}

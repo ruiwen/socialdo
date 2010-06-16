@@ -1,0 +1,51 @@
+<li class="item">
+	<input class="item-check" type="checkbox" {% if item.completed %}checked{% endif %} value="{{ item.id }}">
+	<span class="item-desc {% if item.completed %}item-completed{% endif %}">{{ item.desc }}</span>
+	<div class="item-buttons">
+		<span class="item-reassign label">&raquo;</span>
+		<span class="item-more-info label">i</span>
+	</div>
+	
+	<div class="item-assign">
+		{% if item.assignee %}
+			<div class="item-assignee">
+				<span class="label">{{ _("ASSIGNED TO")|upper }} </span>
+				<a href="{% url sodo.user.show item.assignee.username %}"><img class="" src="{{ MEDIA_URL }}/{{ item.assignee.profile_image }}" alt="{{ item.assignee }}" title="{{ item.assignee }}"></a>
+			</div>
+		{% endif %}
+
+		<div class="item-reassignee">
+			<form action="/item/{{ item.id }}/assign/" method="post">{% csrf_token %}
+				<input type="hidden" value="{{ item.id }}">
+				<label for="item-{{ item.id }}-assign">{% if item.assignee %}{{ _("Reassign item to") }}{% else %}{{ _("Assign item to") }}{% endif %}:</label><input type="text" id="item-{{ item.id }}-assign" name="item-assignee" value="{{ _("enter a username") }}">
+			</form>
+		</div>
+	</div>
+	
+	<div class="item-info">
+		<div class="item-owner">
+			<span class="label">{{ _("BY")|upper }} </span>
+			<a href="{% url sodo.user.show item.owner.username %}"><img class="" src="{{ MEDIA_URL }}/{{ item.owner.profile_image }}" alt="{{ item.owner }}" title="{{ item.owner }}"></a>
+		</div>
+		
+		{% if item.assignee %}
+		<div class="item-assignee">
+			<span class="label">{{ _("ASSIGNED TO")|upper }} </span>
+			<a href="{% url sodo.user.show item.assignee.username %}"><img class="" src="{{ MEDIA_URL }}/{{ item.assignee.profile_image }}" alt="{{ item.assignee }}" title="{{ item.assignee }}"></a>
+		</div>
+		{% endif %}
+		
+		<div class="item-list">
+			<span class="label">{{ _("ON")|upper }} </span>
+			<span class=""><a href="{% url sodo.list.show item.primary_list.id %}">{{ item.primary_list }}</a></span>
+		</div>
+		
+		{% if item.completed %}
+		<div class="item-complete">
+			<span class="label">{{ _("DONE BY")|upper }} </span>
+			<a href="{% url sodo.user.show item.completed_by.username %}"><img class="" src="{{ MEDIA_URL }}/{{ item.completed_by.profile_image }}" alt="{{ item.completed_by }}" title="{{ item.completed_by }}"></a>
+		</div>
+		{% endif %}
+
+	</div>
+</li>

@@ -108,12 +108,8 @@
 			<p class="caption">{{ _("Items pending completion") }}</p>
 			<div id="ongoing-items">
 				<ul>
-					{% for item in user.owned_items.all %}
-						<li>
-							<input class="ongoing item-check" type="checkbox" {% if item.completed %}checked{% endif %} value="{{ item.id }}">
-							<span class="ongoing item-name {% if item.completed %}item-completed{% endif %}">{{ item }}</span>
-							<span class="ongoing item-list"><a href="{% url sodo.list.show item.primary_list.id %}">{{ item.primary_list }}</a></span>
-						</li>			
+					{% for item in user.owned_items.all %}					
+						{% include 'item/item.html' %}	
 					{% endfor %}
 				</ul>
 			</div>

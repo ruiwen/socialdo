@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 	# Item method
 	url(r'item/new/?$', item_new, name="sodo.item.new"),
 	url(r'item/(?P<item_id>\d+)/(?P<status>(in)?complete)/?', item_status_update, name="sodo.item.status.update"),
+	url(r'item/(?P<item_id>\d+)/assign/?', item_assign, name="sodo.item.assign"),
 
 	# User methods
 	url(r'user/(?P<username>\w+)/?$', user_profile, name="sodo.user.show"),

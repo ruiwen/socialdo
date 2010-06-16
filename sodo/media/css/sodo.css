@@ -166,17 +166,6 @@ input[type=checkbox] {
 	width: 500px;
 }
 
-.item-name {
-	display: inline;
-	font-size: 1.8em;
-	width: 15em;
-}
-
-.item-list {
-	font-size: 0.9em;
-	text-align: left;
-	width: 10em;
-}
 
 #ongoing-progress {
 	float: right;
@@ -232,56 +221,7 @@ input[type=checkbox] {
 	padding: 0px;
 }
 
-#thelist {
-	font-size: 20px;
-}
 
-
-.completed {
-	color: #dedede;
-}
-
-.completed .list-item-desc {
-	text-decoration: line-through;
-}
-
-.list-item ul {
-	list-style-type: none;
-}
-
-.list-item ul li {
-	display: inline-block;
-	/*float: left;*/
-}
-
-.list-item-desc {
-	width: 12em;
-}
-
-.list-item-user {
-	font-size: 0.8em;
-}
-
-.list-item-date-added,
-.list-item-date-completed {
-	font-size: 0.5em;
-	margin-right: 9px;
-}
-
-
-.list-item-date-added:hover,
-.list-item-date-completed:hover {
-	font-size: x-small;
-	margin-right: 9px;
-}
-
-
-.list-item input.new-list-item-desc {
-	/*border: none;
-	border-bottom: 1px dotted #5e5e5e;*/
-	color: #5e5e5e;
-	padding-left: 25px;
-}
 
 #thelist-sublists {
 	font-style: italic;
@@ -316,13 +256,91 @@ input[type=checkbox] {
 }
 
 .styled-form label {
-	display: block;
-	float: left;
+	display: inline-block;
+	/*float: left;*/
 	margin-right: 10px;
 	text-align: right;
 	width: 180px;
 }
 
+
+/** Generic List-Item styling **/
+
+.item {
+	font-variant: small-caps;
+	font-size: 23px;
+	list-style-type: none;
+	margin: 6px 0px;
+}
+
+.item img {
+	border: none;
+}
+
+.item-desc {
+	font-weight: bold;
+}
+
+.item-assign,
+.item-info {
+	display: none;
+	font-family: "Helvetica Neue";
+	font-size: 10px !important;
+	padding-left: 24px;
+}
+
+.item-assign label {
+	margin-right: 5px;
+}
+
+.item-assign input[type=text] {
+	border: none;
+	border-bottom: 1px dotted #5e5e5e;
+	color: #7e7e7e !important;
+	font-family: "Georgia", "serif";
+	font-style: italic;
+	padding-left: 7px;
+	width: 20em;
+}
+
+
+.item-info {
+	height: 24px;
+}
+
+.item-info div {
+	display: inline-block;
+	margin: 0px 3px;
+	vertical-align: middle;
+}
+
+.item .label {
+	border-bottom: 2px solid #555;
+	display: inline-block;
+	font-weight: bold;
+	padding: 0px;
+	text-align: center;
+	/*width: 1.5em;*/
+}
+
+.item-buttons {
+	display: none;
+	font-family: "Helvetica Neue";
+	font-size: 15px;
+	font-variant: normal;
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+.item-more-info {
+	font-family: Courier;
+}
+
+.item-buttons .label {
+	border: none;
+	cursor: pointer;
+	width: 0.8em;
+}
 
 /** User Profile **/
 

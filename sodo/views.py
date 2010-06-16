@@ -195,6 +195,48 @@ def item_status_update(request, item_id, status):
 		
 
 
+def item_assign(request, item_id):
+	# Assign an Item (in URL) to a given User (in POST)
+	
+	if request.method == 'POST' and request.POST['item-assignee']:
+		
+		try:
+			# Get the Item
+			i = Item.objects.get(id=int(item_id))
+			# Get the User
+			u = User.objects.get(username=request.POST['item-assignee'])
+
+			# TODO:
+			# Verify that User has rights to modify Item
+			
+			# Ensure that item-assignee is actually a collaborator in this List
+			if u not in request.user.contacts:
+				raise Exception("Requested collaborator is not in your contacts!")
+
+			# Set the assignment
+			i.assignee = u
+			# .. and save
+			i.save()
+
+			if request.is_ajax():
+				return HttpResponse(simplejson.dumps({'success':1}))
+			else:
+				messages.success(request, _("Item \"%(item-desc)s\" assigned to %(assignee)s" % {'item-desc': i.desc, 'assignee': unicode(u)}))
+				return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+		except Exception as e:
+			if request.is_ajax():			
+				return HttpResponseBadRequest(simplejson.dumps({'error':unicode(e)}))		
+			else:
+				messages.error(unicode(e))
+				return HttpResponseRedirect(request.META['HTTP_REFERER'])
+		
+	else:
+		return HttpResponseBadRequest()
+		
+
+
+
 def user_add_friend(request, username):
 	
 	friend = User.objects.get(username=username)
